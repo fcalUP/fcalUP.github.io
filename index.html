@@ -138,6 +138,7 @@
             allRows.slice(1).forEach(row => {
               if (row) {
                 const cells = row.split(',');
+                alert(cells[2]);
                 if (cells[0].trim() === specificId && cells[2].trim() === password) {
                   columnsToShow.forEach(index => {
                     if (index < cells.length) {
