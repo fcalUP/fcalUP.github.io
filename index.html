@@ -100,7 +100,7 @@
 
 <body>
   <div class="container">
-    <img src="https://raw.githubusercontent.com/fcalUP/fcalUP.github.io/main/LOGO.png" width="30%">
+    <img src="https://raw.githubusercontent.com/fcalUP/fcalUP.github.io/main/LOGO.png" alt="Logo">
     <h1>Diseño Digital</h1>
 
     <!-- Campo de entrada para el ID y botón de búsqueda -->
@@ -117,7 +117,7 @@
     document.addEventListener('DOMContentLoaded', function() {
       const url = 'https://docs.google.com/spreadsheets/d/1bA9COKwgJdbCpucQzcV64k2xiATwGSDcT5z3NPGE08M/pub?output=csv';
 
-      const columnsToShow = [1,3,4,5]; // Especifica las columnas que deseas mostrar
+      const columnsToShow = [1, 3, 4, 5]; // Especifica las columnas que deseas mostrar
 
       document.getElementById('searchButton').addEventListener('click', function() {
         const specificId = document.getElementById('idInput').value.trim();
@@ -149,59 +149,64 @@
                       const valueDiv = document.createElement('div');
 
                       if (index === 5) {
-                    const progressBar = document.createElement('progress');
-                    if (progressValue < 15) {
-                      progressBar.max =15;
-                    }else if(progressValue < 25){
-                      progressBar.max =25;
-                    }else if(progressValue < 40){
-                      progressBar.max =40;
-                    }else if(progressValue < 65){
-                      progressBar.max =65;
-                    }else if(progressValue < 90){
-                      progressBar.max =90;
-                    }else if(progressValue < 125){
-                      progressBar.max =125;
+                        const progressValue = parseFloat(cells[index].trim());
+                        const progressBar = document.createElement('progress');
+                        if (!isNaN(progressValue)) {
+                          if (progressValue < 15) {
+                            progressBar.max = 15;
+                            progressBar.value = progressValue;
+                          } else if (progressValue < 25) {
+                            progressBar.max = 25;
+                            progressBar.value = progressValue;
+                          } else if (progressValue < 40) {
+                            progressBar.max = 40;
+                            progressBar.value = progressValue;
+                          } else if (progressValue < 65) {
+                            progressBar.max = 65;
+                            progressBar.value = progressValue;
+                          } else if (progressValue < 90) {
+                            progressBar.max = 90;
+                            progressBar.value = progressValue;
+                          } else if (progressValue < 125) {
+                            progressBar.max = 125;
+                            progressBar.value = progressValue;
+                          }
+                        } else {
+                          progressBar.value = 0;
+                          progressBar.max = 125;
+                        }
+
+                        valueDiv.appendChild(progressBar);
+
+                        // Crear un elemento de texto debajo de la barra de progreso
+                        const progressText = document.createElement('div');
+                        progressText.className = 'progress-text';
+                        if (progressValue < 15) {
+                          progressText.textContent = `Nivel 0: ${progressValue}/15`;
+                        } else if (progressValue < 25) {
+                          progressText.textContent = `Nivel 1: ${progressValue}/25`;
+                        } else if (progressValue < 40) {
+                          progressText.textContent = `Nivel 2: ${progressValue}/40`;
+                        } else if (progressValue < 65) {
+                          progressText.textContent = `Nivel 3: ${progressValue}/65`;
+                        } else if (progressValue < 90) {
+                          progressText.textContent = `Nivel 4: ${progressValue}/90`;
+                        } else if (progressValue < 125) {
+                          progressText.textContent = `Nivel 5: ${progressValue}/125`;
+                        }
+
+                        valueDiv.appendChild(progressText);
+                      } else {
+                        valueDiv.textContent = cells[index];
+                      }
+
+                      div.appendChild(headerDiv);
+                      div.appendChild(valueDiv);
+
+                      resultContainer.appendChild(div);
                     }
-
-                    const progressValue = parseFloat(cells[index].trim());
-                    if (!isNaN(progressValue)) {
-                      progressBar.value = progressValue;
-                    } else {
-                      progressBar.value = 0;
-                    }
-
-                    valueDiv.appendChild(progressBar);
-
-                    // Crear un elemento de texto debajo de la barra de progreso
-                    const progressText = document.createElement('div');
-                    progressText.className = 'progress-text';
-                    if (progressValue < 15) {
-                      progressText.textContent = `Nivel 0: ${progressValue}/15`;
-                    }else if(progressValue < 25){
-                      progressText.textContent = `Nivel 1: ${progressValue}/25`;
-                    }else if(progressValue < 40){
-                      progressText.textContent = `Nivel 2: ${progressValue}/40`;
-                    }else if(progressValue < 65){
-                      progressText.textContent = `Nivel 3: ${progressValue}/65`;
-                    }else if(progressValue < 90){
-                      progressText.textContent = `Nivel 4: ${progressValue}/90`;
-                    }else if(progressValue < 125){
-                      progressText.textContent = `Nivel 5: ${progressValue}/125`;
-                    }
-
-                    valueDiv.appendChild(progressText);
-                  } else {
-                    valueDiv.textContent = cells[index];
-                  }
-
-                  div.appendChild(headerDiv);
-                  div.appendChild(valueDiv);
-
-                  resultContainer.appendChild(div);
-                }
-              });
-              dataFound = true;
+                  });
+                  dataFound = true;
                 }
               }
             });
