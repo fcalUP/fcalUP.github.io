@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Google Sheets Data</title>
+  <style>
+    /* Estilos CSS */
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f5f5f7;
+      margin: 0;
+    }
+
+    .container {
+      background-color: #fff;
+      padding: 40px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      text-align: center;
+      width: 100%;
+      max-width: 400px;
+      position: relative;
+    }
+
+    img {
+      width: 30%;
+    }
+
+    h1 {
+      font-weight: 600;
+      margin-bottom: 30px;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #d1d1d6;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 20px;
+      background-color: #0071e3;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #005bb5;
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .grid-item {
+      background-color: #fafafa;
+      padding: 10px;
+      border-radius: 6px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      margin-bottom: 10px;
+    }
+
+    .progress-text {
+      margin-top: 5px;
+      font-size: 14px;
+      color: #666;
+    }
+
+    .close-icon {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 24px;
+      cursor: pointer;
+      color: #666;
+    }
+
+    .close-icon:hover {
+      color: #333;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <img src="images/LOGO.png" width="30%">
+    <h1>Diseño Digital</h1>
+
+    <!-- Campo de entrada para el ID y botón de búsqueda -->
+    <input type="text" id="idInput" placeholder="Ingrese el ID">
+    <input type="password" id="passwordInput" placeholder="Ingrese su contraseña">
+    <button id="searchButton">Buscar</button>
+
+    <div id="resultContainer" class="grid-container" style="display: none;">
+      <!-- Aquí se insertarán los datos -->
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const url = 'https://docs.google.com/spreadsheets/d/1bA9COKwgJdbCpucQzcV64k2xiATwGSDcT5z3NPGE08M/pub?output=csv';
+
+      const columnsToShow = [0, 1, 5]; // Especifica las columnas que deseas mostrar
+
+      document.getElementById('searchButton').addEventListener('click', function() {
+        const specificId = document.getElementById('idInput').value.trim();
+        const password = document.getElementById('passwordInput').value.trim();
+
+        fetch(url)
+          .then(response => response.text())
+          .then(data => {
+            const allRows = data.split(/\r?\n|\r/);
+            const resultContainer = document.getElementById('resultContainer');
+            const loginInputs = document.querySelectorAll('.container input, .container button');
+
+            resultContainer.innerHTML = '';
+
+            const headers = allRows[0].split(',');
+
+            let dataFound = false;
+            allRows.slice(1).forEach(row => {
+              if (row) {
+                const cells = row.split(',');
+                if (cells[0].trim() === specificId && cells[2].trim() === password) {
+                  columnsToShow.forEach(index => {
+                    if (index < cells.length) {
+                      const div = document.createElement('div');
+                      div.className = 'grid-item';
+
+                      const headerDiv = document.createElement('div');
+                      headerDiv.textContent = headers[index];
+                      const valueDiv = document.createElement('div');
+
+                      if (index === 5) {
+                        const progressBar = document.createElement('progress');
+                        progressBar.max = 100;
+
+                        const progressValue = parseFloat(cells[index].trim());
+                        if (!isNaN(progressValue)) {
+                          progressBar.value = progressValue;
+                        } else {
+                          progressBar.value = 0;
+                        }
+
+                        valueDiv.appendChild(progressBar);
+
+                        // Crear un elemento de texto debajo de la barra de progreso
+                        const progressText = document.createElement('div');
+                        progressText.className = 'progress-text';
+                        if(progressValue < 15){
+                          progressText.textContent = `Nivel 0: ${progressValue}/15`;
+                        }
+                        
+                        valueDiv.appendChild(progressText);
+                      } else {
+                        valueDiv.textContent = cells[index];
+                      }
+
+                      div.appendChild(headerDiv);
+                      div.appendChild(valueDiv);
+
+                      resultContainer.appendChild(div);
+                    }
+                  });
+                  dataFound = true;
+                }
+              }
+            });
+
+            if (!dataFound) {
+              const div = document.createElement('div');
+              div.className = 'grid-item';
+              div.textContent = 'No se encontraron datos para el ID y la contraseña proporcionados.';
+              resultContainer.appendChild(div);
+            }
+
+            if (dataFound) {
+              resultContainer.style.display = 'grid';
+              loginInputs.forEach(input => input.style.display = 'none');
+
+              const closeIcon = document.createElement('div');
+              closeIcon.className = 'close-icon';
+              closeIcon.textContent = '×';
+              closeIcon.onclick = function() {
+                resultContainer.style.display = 'none';
+                loginInputs.forEach(input => {
+                  input.style.display = 'block';
+                  input.value = '';
+                });
+              };
+              resultContainer.appendChild(closeIcon);
+            }
+          })
+          .catch(error => console.error('Error fetching the Google Sheets data:', error));
+      });
+    });
+  </script>
+</body>
+
+</html>
