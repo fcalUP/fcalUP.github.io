@@ -149,37 +149,59 @@
                       const valueDiv = document.createElement('div');
 
                       if (index === 5) {
-                        const progressBar = document.createElement('progress');
-                        progressBar.max = 100;
-
-                        const progressValue = parseFloat(cells[index].trim());
-                        if (!isNaN(progressValue)) {
-                          progressBar.value = progressValue;
-                        } else {
-                          progressBar.value = 0;
-                        }
-
-                        valueDiv.appendChild(progressBar);
-
-                        // Crear un elemento de texto debajo de la barra de progreso
-                        const progressText = document.createElement('div');
-                        progressText.className = 'progress-text';
-                        if(progressValue < 15){
-                          progressText.textContent = `Nivel 0: ${progressValue}/15`;
-                        }
-                        
-                        valueDiv.appendChild(progressText);
-                      } else {
-                        valueDiv.textContent = cells[index];
-                      }
-
-                      div.appendChild(headerDiv);
-                      div.appendChild(valueDiv);
-
-                      resultContainer.appendChild(div);
+                    const progressBar = document.createElement('progress');
+                    if (progressValue < 15) {
+                      progressBar.max =15;
+                    }else if(progressValue < 25){
+                      progressBar.max =25;
+                    }else if(progressValue < 40){
+                      progressBar.max =40;
+                    }else if(progressValue < 65){
+                      progressBar.max =65;
+                    }else if(progressValue < 90){
+                      progressBar.max =90;
+                    }else if(progressValue < 125){
+                      progressBar.max =125;
                     }
-                  });
-                  dataFound = true;
+
+                    const progressValue = parseFloat(cells[index].trim());
+                    if (!isNaN(progressValue)) {
+                      progressBar.value = progressValue;
+                    } else {
+                      progressBar.value = 0;
+                    }
+
+                    valueDiv.appendChild(progressBar);
+
+                    // Crear un elemento de texto debajo de la barra de progreso
+                    const progressText = document.createElement('div');
+                    progressText.className = 'progress-text';
+                    if (progressValue < 15) {
+                      progressText.textContent = `Nivel 0: ${progressValue}/15`;
+                    }else if(progressValue < 25){
+                      progressText.textContent = `Nivel 1: ${progressValue}/25`;
+                    }else if(progressValue < 40){
+                      progressText.textContent = `Nivel 2: ${progressValue}/40`;
+                    }else if(progressValue < 65){
+                      progressText.textContent = `Nivel 3: ${progressValue}/65`;
+                    }else if(progressValue < 90){
+                      progressText.textContent = `Nivel 4: ${progressValue}/90`;
+                    }else if(progressValue < 125){
+                      progressText.textContent = `Nivel 5: ${progressValue}/125`;
+                    }
+
+                    valueDiv.appendChild(progressText);
+                  } else {
+                    valueDiv.textContent = cells[index];
+                  }
+
+                  div.appendChild(headerDiv);
+                  div.appendChild(valueDiv);
+
+                  resultContainer.appendChild(div);
+                }
+              });
+              dataFound = true;
                 }
               }
             });
