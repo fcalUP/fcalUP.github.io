@@ -182,22 +182,22 @@
                       if (!isNaN(progressValue)) {
                         if (progressValue < 15) {
                           progressBar.max = 15;
-                          progressBar.value = progressValue/15;
+                          progressBar.value = (progressValue*100)/15;
                         } else if (progressValue < 25) {
                           progressBar.max = 25;
-                          progressBar.value = progressValue/25;
+                          progressBar.value = (progressValue*100)/25;
                         } else if (progressValue < 40) {
                           progressBar.max = 40;
-                          progressBar.value = progressValue/40;
+                          progressBar.value = (progressValue*100)/40;
                         } else if (progressValue < 65) {
                           progressBar.max = 65;
-                          progressBar.value = progressValue/65;
+                          progressBar.value = (progressValue*100)/65;
                         } else if (progressValue < 90) {
                           progressBar.max = 90;
-                          progressBar.value = progressValue/90;
+                          progressBar.value = (progressValue*100)/90;
                         } else if (progressValue < 125) {
                           progressBar.max = 125;
-                          progressBar.value = progressValue/125;
+                          progressBar.value = (progressValue*100)/125;
                         }
                       } else {
                         progressBar.value = 0;
