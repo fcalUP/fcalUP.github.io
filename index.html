@@ -181,56 +181,47 @@
                     if (index === 5) {
                       const progressValue = parseFloat(cells[index].trim());
                       const progressBar = document.createElement('progress');
+                      let max = 100;  // Valor máximo por defecto
+                      let min = 0;    // Valor mínimo por defecto
+                      let a =0;
+
                       if (!isNaN(progressValue)) {
                         if (progressValue < 15) {
-                          a= 15;
-                          b = 0;
-                          progressBar.value = ((progressValue-b)/(a-b))*100;
+                          a = 15;
+                          b=0;
                         } else if (progressValue < 25) {
-                          a = 25;
-                          b = 16;
-                          progressBar.value = ((progressValue-b)/(a-b))*100;
+                          a=25
+                          b=16;
                         } else if (progressValue < 40) {
-                          a = 40;
-                          b = 26;
-                          progressBar.value = ((progressValue-b)/(a-b))*100;
+                          a=40;
+                          b=26;
                         } else if (progressValue < 65) {
-                          a = 65;
-                          b = 41;
-                          progressBar.value = ((progressValue-b)/(a-b))*100;
+                          a=65;
+                          b=41;
                         } else if (progressValue < 90) {
-                          a = 90;
-                          b =66;
-                          progressBar.value = ((progressValue-b)/(a-b))*100;
+                          a=90;
+                          b=66;
                         } else if (progressValue < 125) {
-                          a = 125;
-                          b = 91;
-                          progressBar.value = ((progressValue-b)/(a-b))*100;
+                          a=125;
+                          b=91;
                         }
+
+                        progressBar.max = max;
+                        progressBar.min = min;
+                        progressBar.value = ((progressValue-b)/(a-b)*100);
+                        alert(progressBar.value);
+
+                        const progressText = document.createElement('div');
+                        progressText.className = 'progress-text';
+                        progressText.textContent = `Nivel ${Math.floor((max - min) / 25)}: ${progressValue}/${a}`;
+                        valueDiv.appendChild(progressText);
                       } else {
                         progressBar.value = 0;
-                        progressBar.max = 100;
+                        progressBar.max = 125;
+                        progressBar.min = 0;
                       }
 
                       valueDiv.appendChild(progressBar);
-
-                      const progressText = document.createElement('div');
-                      progressText.className = 'progress-text';
-                      if (progressValue < 15) {
-                        progressText.textContent = `Nivel 0: ${progressValue}/15`;
-                      } else if (progressValue < 25) {
-                        progressText.textContent = `Nivel 1: ${progressValue}/25`;
-                      } else if (progressValue < 40) {
-                        progressText.textContent = `Nivel 2: ${progressValue}/40`;
-                      } else if (progressValue < 65) {
-                        progressText.textContent = `Nivel 3: ${progressValue}/65`;
-                      } else if (progressValue < 90) {
-                        progressText.textContent = `Nivel 4: ${progressValue}/90`;
-                      } else if (progressValue < 125) {
-                        progressText.textContent = `Nivel 5: ${progressValue}/125`;
-                      }
-
-                      valueDiv.appendChild(progressText);
                     } else {
                       valueDiv.textContent = cells[index];
                     }
