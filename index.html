@@ -115,129 +115,157 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      const url = 'https://docs.google.com/spreadsheets/d/1bA9COKwgJdbCpucQzcV64k2xiATwGSDcT5z3NPGE08M/pub?output=csv';
+  const url = 'https://docs.google.com/spreadsheets/d/1bA9COKwgJdbCpucQzcV64k2xiATwGSDcT5z3NPGE08M/pub?output=csv';
 
-      const columnsToShow = [1, 3, 4, 5]; // Especifica las columnas que deseas mostrar
+  document.getElementById('searchButton').addEventListener('click', function() {
+    const specificId = document.getElementById('idInput').value.trim();
+    const password = document.getElementById('passwordInput').value.trim();
 
-      document.getElementById('searchButton').addEventListener('click', function() {
-        const specificId = document.getElementById('idInput').value.trim();
-        const password = document.getElementById('passwordInput').value.trim();
+    fetch(url)
+      .then(response => response.text())
+      .then(data => {
+        const allRows = data.split(/\r?\n|\r/);
+        const resultContainer = document.getElementById('resultContainer');
+        const loginInputs = document.querySelectorAll('.container input, .container button');
 
-        fetch(url)
-          .then(response => response.text())
-          .then(data => {
-            const allRows = data.split(/\r?\n|\r/);
-            const resultContainer = document.getElementById('resultContainer');
-            const loginInputs = document.querySelectorAll('.container input, .container button');
+        resultContainer.innerHTML = '';
 
-            resultContainer.innerHTML = '';
+        const headers = allRows[0].split(',');
 
-            const headers = allRows[0].split(',');
+        let dataFound = false;
 
-            let dataFound = false;
+        if (specificId === 'Kli' && password === 'zqq203') {
+          // Solicitar ID específico
+          const inputId = prompt('Ingrese el ID específico que desea ver:');
+          if (inputId) {
             allRows.slice(1).forEach(row => {
               if (row) {
                 const cells = row.split(',');
-                if (cells[0].trim() === specificId && cells[2].trim() === password) {
-                  columnsToShow.forEach(index => {
-                    if (index < cells.length) {
-                      const div = document.createElement('div');
-                      div.className = 'grid-item';
+                if (cells[0].trim() === inputId.trim()) {
+                  headers.forEach((header, index) => {
+                    const div = document.createElement('div');
+                    div.className = 'profile-item';
 
-                      const headerDiv = document.createElement('div');
-                      headerDiv.textContent = headers[index];
-                      const valueDiv = document.createElement('div');
+                    const label = document.createElement('label');
+                    label.textContent = header + ':';
+                    const value = document.createElement('span');
+                    value.textContent = ' ' + cells[index];
 
-                      if (index === 5) {
-                        const progressValue = parseFloat(cells[index].trim());
-                        const progressBar = document.createElement('progress');
-                        if (!isNaN(progressValue)) {
-                          if (progressValue < 15) {
-                            progressBar.max = 15;
-                            progressBar.value = progressValue;
-                          } else if (progressValue < 25) {
-                            progressBar.max = 25;
-                            progressBar.value = progressValue;
-                          } else if (progressValue < 40) {
-                            progressBar.max = 40;
-                            progressBar.value = progressValue;
-                          } else if (progressValue < 65) {
-                            progressBar.max = 65;
-                            progressBar.value = progressValue;
-                          } else if (progressValue < 90) {
-                            progressBar.max = 90;
-                            progressBar.value = progressValue;
-                          } else if (progressValue < 125) {
-                            progressBar.max = 125;
-                            progressBar.value = progressValue;
-                          }
-                        } else {
-                          progressBar.value = 0;
-                          progressBar.max = 125;
-                        }
-
-                        valueDiv.appendChild(progressBar);
-
-                        // Crear un elemento de texto debajo de la barra de progreso
-                        const progressText = document.createElement('div');
-                        progressText.className = 'progress-text';
-                        if (progressValue < 15) {
-                          progressText.textContent = `Nivel 0: ${progressValue}/15`;
-                        } else if (progressValue < 25) {
-                          progressText.textContent = `Nivel 1: ${progressValue}/25`;
-                        } else if (progressValue < 40) {
-                          progressText.textContent = `Nivel 2: ${progressValue}/40`;
-                        } else if (progressValue < 65) {
-                          progressText.textContent = `Nivel 3: ${progressValue}/65`;
-                        } else if (progressValue < 90) {
-                          progressText.textContent = `Nivel 4: ${progressValue}/90`;
-                        } else if (progressValue < 125) {
-                          progressText.textContent = `Nivel 5: ${progressValue}/125`;
-                        }
-
-                        valueDiv.appendChild(progressText);
-                      } else {
-                        valueDiv.textContent = cells[index];
-                      }
-
-                      div.appendChild(headerDiv);
-                      div.appendChild(valueDiv);
-
-                      resultContainer.appendChild(div);
-                    }
+                    div.appendChild(label);
+                    div.appendChild(value);
+                    resultContainer.appendChild(div);
                   });
                   dataFound = true;
                 }
               }
             });
+          }
+        } else {
+          // Verificación normal para otros usuarios
+          const columnsToShow = [1, 3, 4, 5];
+          allRows.slice(1).forEach(row => {
+            if (row) {
+              const cells = row.split(',');
+              if (cells[0].trim() === specificId && cells[2].trim() === password) {
+                columnsToShow.forEach(index => {
+                  if (index < cells.length) {
+                    const div = document.createElement('div');
+                    div.className = 'grid-item';
 
-            if (!dataFound) {
-              const div = document.createElement('div');
-              div.className = 'grid-item';
-              div.textContent = 'No se encontraron datos para el ID y la contraseña proporcionados.';
-              resultContainer.appendChild(div);
-            }
+                    const headerDiv = document.createElement('div');
+                    headerDiv.textContent = headers[index];
+                    const valueDiv = document.createElement('div');
 
-            if (dataFound) {
-              resultContainer.style.display = 'grid';
-              loginInputs.forEach(input => input.style.display = 'none');
+                    if (index === 5) {
+                      const progressValue = parseFloat(cells[index].trim());
+                      const progressBar = document.createElement('progress');
+                      if (!isNaN(progressValue)) {
+                        if (progressValue < 15) {
+                          progressBar.max = 15;
+                          progressBar.value = progressValue/15;
+                        } else if (progressValue < 25) {
+                          progressBar.max = 25;
+                          progressBar.value = progressValue/25;
+                        } else if (progressValue < 40) {
+                          progressBar.max = 40;
+                          progressBar.value = progressValue/40;
+                        } else if (progressValue < 65) {
+                          progressBar.max = 65;
+                          progressBar.value = progressValue/65;
+                        } else if (progressValue < 90) {
+                          progressBar.max = 90;
+                          progressBar.value = progressValue/90;
+                        } else if (progressValue < 125) {
+                          progressBar.max = 125;
+                          progressBar.value = progressValue/125;
+                        }
+                      } else {
+                        progressBar.value = 0;
+                        progressBar.max = 125;
+                      }
 
-              const closeIcon = document.createElement('div');
-              closeIcon.className = 'close-icon';
-              closeIcon.textContent = '×';
-              closeIcon.onclick = function() {
-                resultContainer.style.display = 'none';
-                loginInputs.forEach(input => {
-                  input.style.display = 'block';
-                  input.value = '';
+                      valueDiv.appendChild(progressBar);
+
+                      const progressText = document.createElement('div');
+                      progressText.className = 'progress-text';
+                      if (progressValue < 15) {
+                        progressText.textContent = `Nivel 0: ${progressValue}/15`;
+                      } else if (progressValue < 25) {
+                        progressText.textContent = `Nivel 1: ${progressValue}/25`;
+                      } else if (progressValue < 40) {
+                        progressText.textContent = `Nivel 2: ${progressValue}/40`;
+                      } else if (progressValue < 65) {
+                        progressText.textContent = `Nivel 3: ${progressValue}/65`;
+                      } else if (progressValue < 90) {
+                        progressText.textContent = `Nivel 4: ${progressValue}/90`;
+                      } else if (progressValue < 125) {
+                        progressText.textContent = `Nivel 5: ${progressValue}/125`;
+                      }
+
+                      valueDiv.appendChild(progressText);
+                    } else {
+                      valueDiv.textContent = cells[index];
+                    }
+
+                    div.appendChild(headerDiv);
+                    div.appendChild(valueDiv);
+
+                    resultContainer.appendChild(div);
+                  }
                 });
-              };
-              resultContainer.appendChild(closeIcon);
+                dataFound = true;
+              }
             }
-          })
-          .catch(error => console.error('Error fetching the Google Sheets data:', error));
-      });
-    });
+          });
+        }
+
+        if (!dataFound) {
+          const div = document.createElement('div');
+          div.className = 'grid-item';
+          div.textContent = 'No se encontraron datos para el ID proporcionado.';
+          resultContainer.appendChild(div);
+        }
+
+        if (dataFound) {
+          resultContainer.style.display = 'block';
+          loginInputs.forEach(input => input.style.display = 'none');
+
+          const closeIcon = document.createElement('div');
+          closeIcon.className = 'close-icon';
+          closeIcon.textContent = '×';
+          closeIcon.onclick = function() {
+            resultContainer.style.display = 'none';
+            loginInputs.forEach(input => {
+              input.style.display = 'block';
+              input.value = '';
+            });
+          };
+          resultContainer.appendChild(closeIcon);
+        }
+      })
+      .catch(error => console.error('Error fetching the Google Sheets data:', error));
+  });
+});
   </script>
 </body>
 
