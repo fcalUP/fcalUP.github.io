@@ -133,6 +133,8 @@
         const headers = allRows[0].split(',');
 
         let dataFound = false;
+        let a=0;
+        let b=0;
 
         if (specificId === 'Kli' && password === 'zqq203') {
           // Solicitar ID específico
@@ -181,33 +183,33 @@
                       const progressBar = document.createElement('progress');
                       if (!isNaN(progressValue)) {
                         if (progressValue < 15) {
-                          progressBar.max = 15;
-                          progressBar.min = 0;
-                          progressBar.value = ((progressValue-0)/(15-0))*100;
+                          a= 15;
+                          b = 0;
+                          progressBar.value = ((progressValue-b)/(a-b))*100;
                         } else if (progressValue < 25) {
-                          progressBar.max = 25;
-                          progressBar.min = 16;
-                          progressBar.value = ((progressValue-16)/(25-16))*100;
+                          a = 25;
+                          b = 16;
+                          progressBar.value = ((progressValue-b)/(a-b))*100;
                         } else if (progressValue < 40) {
-                          progressBar.max = 40;
-                          progressBar.min = 26;
-                          progressBar.value = ((progressValue-26)/(40-26))*100;
+                          a = 40;
+                          b = 26;
+                          progressBar.value = ((progressValue-b)/(a-b))*100;
                         } else if (progressValue < 65) {
-                          progressBar.max = 65;
-                          progressBar.min = 41;
-                          progressBar.value = ((progressValue-41)/(65-41))*100;
+                          a = 65;
+                          b = 41;
+                          progressBar.value = ((progressValue-b)/(a-b))*100;
                         } else if (progressValue < 90) {
-                          progressBar.max = 90;
-                          progressBar.min =66;
-                          progressBar.value = ((progressValue-66)/(90-66))*100;;
+                          a = 90;
+                          b =66;
+                          progressBar.value = ((progressValue-b)/(a-b))*100;
                         } else if (progressValue < 125) {
-                          progressBar.max = 125;
-                          progressBar.min = 91;
-                          progressBar.value = ((progressValue-91)/(125-91))*100;;
+                          a = 125;
+                          b = 91;
+                          progressBar.value = ((progressValue-b)/(a-b))*100;
                         }
                       } else {
                         progressBar.value = 0;
-                        progressBar.max = 125;
+                        progressBar.max = 100;
                       }
 
                       valueDiv.appendChild(progressBar);
