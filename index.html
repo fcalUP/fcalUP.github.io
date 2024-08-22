@@ -1,270 +1,295 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 
 <head>
-  <title>Diseño Digital Oficial Site</title>
-  <style>
-    /* Estilos CSS */
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background-color: #f5f5f7;
-      margin: 0;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Sheets Data</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f5f5f7;
+            margin: 0;
+        }
 
-    .container {
-      background-color: #fff;
-      padding: 40px;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      text-align: center;
-      width: 100%;
-      max-width: 400px;
-      position: relative;
-    }
+        .container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+        }
 
-    img {
-      width: 30%;
-    }
+        h1 {
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
 
-    h1 {
-      font-weight: 600;
-      margin-bottom: 30px;
-    }
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #d1d1d6;
+            border-radius: 6px;
+            font-size: 16px;
+        }
 
-    input[type="text"],
-    input[type="password"] {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      border: 1px solid #d1d1d6;
-      border-radius: 6px;
-      font-size: 16px;
-    }
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #0071e3;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
 
-    button {
-      width: 100%;
-      padding: 10px;
-      margin-top: 20px;
-      background-color: #0071e3;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-    }
+        button:hover {
+            background-color: #005bb5;
+        }
 
-    button:hover {
-      background-color: #005bb5;
-    }
+        .profile-container {
+            display: flex;
+            align-items: flex-start;
+            margin-top: 20px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            max-width: 600px;
+            width: 100%;
+        }
 
-    .grid-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 10px;
-      margin-top: 20px;
-    }
+        .profile-image img {
+            max-width: 150px;
+            border-radius: 8px;
+            margin-right: 20px;
+        }
 
-    .grid-item {
-      background-color: #fafafa;
-      padding: 10px;
-      border-radius: 6px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      margin-bottom: 10px;
-    }
+        .profile-details {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
 
-    .progress-text {
-      margin-top: 5px;
-      font-size: 14px;
-      color: #666;
-    }
+        .grid-item {
+            background-color: #fafafa;
+            padding: 10px;
+            border-radius: 6px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px;
+        }
 
-    .close-icon {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      font-size: 24px;
-      cursor: pointer;
-      color: #666;
-    }
+        .close-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
 
-    .close-icon:hover {
-      color: #333;
-    }
-  </style>
+        .close-icon:hover {
+            color: #333;
+        }
+    </style>
 </head>
 
 <body>
-  <div class="container">
-    <img src="https://raw.githubusercontent.com/fcalUP/fcalUP.github.io/main/LOGO.png" alt="Logo">
-    <h1>Diseño Digital</h1>
-
-    <!-- Campo de entrada para el ID y botón de búsqueda -->
-    <input type="text" id="idInput" placeholder="Ingrese el ID">
-    <input type="password" id="passwordInput" placeholder="Ingrese su contraseña">
-    <button id="searchButton">Buscar</button>
-
-    <div id="resultContainer" class="grid-container" style="display: none;">
-      <!-- Aquí se insertarán los datos -->
+    <div class="container">
+        <img src="images/LOGO.png" width="30%">
+        <h1>Diseño Digital</h1>
+        <input type="text" id="idInput" placeholder="Ingrese el ID">
+        <input type="password" id="passwordInput" placeholder="Ingrese su contraseña">
+        <button id="searchButton">Buscar</button>
+        <div id="resultContainer" class="grid-container" style="display: none;">
+            <!-- Aquí se insertarán los datos -->
+        </div>
     </div>
-  </div>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-  const url = 'https://docs.google.com/spreadsheets/d/1bA9COKwgJdbCpucQzcV64k2xiATwGSDcT5z3NPGE08M/pub?output=csv';
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const url = 'https://docs.google.com/spreadsheets/d/1bA9COKwgJdbCpucQzcV64k2xiATwGSDcT5z3NPGE08M/pub?output=csv';
 
-  document.getElementById('searchButton').addEventListener('click', function() {
-    const specificId = document.getElementById('idInput').value.trim();
-    const password = document.getElementById('passwordInput').value.trim();
+            document.getElementById('searchButton').addEventListener('click', function () {
+                const specificId = document.getElementById('idInput').value.trim();
+                const password = document.getElementById('passwordInput').value.trim();
 
-    fetch(url)
-      .then(response => response.text())
-      .then(data => {
-        const allRows = data.split(/\r?\n|\r/);
-        const resultContainer = document.getElementById('resultContainer');
-        const loginInputs = document.querySelectorAll('.container input, .container button');
+                fetch(url)
+                    .then(response => response.text())
+                    .then(data => {
+                        const allRows = data.split(/\r?\n|\r/);
+                        const resultContainer = document.getElementById('resultContainer');
+                        const loginInputs = document.querySelectorAll('.container input, .container button');
 
-        resultContainer.innerHTML = '';
+                        resultContainer.innerHTML = '';
 
-        const headers = allRows[0].split(',');
+                        const headers = allRows[0].split(',');
 
-        let dataFound = false;
-        let a=0;
-        let b=0;
+                        let dataFound = false;
 
-        if (specificId === 'Kli' && password === 'zqq203') {
-          // Solicitar ID específico
-          const inputId = prompt('Ingrese el ID específico que desea ver:');
-          if (inputId) {
-            allRows.slice(1).forEach(row => {
-              if (row) {
-                const cells = row.split(',');
-                if (cells[0].trim() === inputId.trim()) {
-                  headers.forEach((header, index) => {
-                    const div = document.createElement('div');
-                    div.className = 'profile-item';
+                        if (specificId === 'Kali' && password === 'ZQQ203') {
+                            // Generar leaderboard basado en Exp
+                            const leaderboardData = allRows.slice(1).map(row => {
+                                const cells = row.split(',');
+                                return {
+                                    name: cells[1], // Nombre del alumno (asumiendo que está en la columna 1)
+                                    exp: parseFloat(cells[5]) // Experiencia del alumno (asumiendo que está en la columna 5)
+                                };
+                            });
 
-                    const label = document.createElement('label');
-                    label.textContent = header + ':';
-                    const value = document.createElement('span');
-                    value.textContent = ' ' + cells[index];
+                            // Ordenar los alumnos por experiencia (Exp)
+                            leaderboardData.sort((a, b) => b.exp - a.exp);
 
-                    div.appendChild(label);
-                    div.appendChild(value);
-                    resultContainer.appendChild(div);
-                  });
-                  dataFound = true;
-                }
-              }
-            });
-          }
-        } else {
-          // Verificación normal para otros usuarios
-          const columnsToShow = [1, 3, 4, 5];
-          allRows.slice(1).forEach(row => {
-            if (row) {
-              const cells = row.split(',');
-              if (cells[0].trim() === specificId && cells[2].trim() === password) {
-                columnsToShow.forEach(index => {
-                  if (index < cells.length) {
-                    const div = document.createElement('div');
-                    div.className = 'grid-item';
+                            // Crear tabla de leaderboard
+                            let leaderboardHTML = "<table style='width: 100%;'><tr><th>Nombre</th><th>Exp</th></tr>";
+                            leaderboardData.forEach(alumno => {
+                                leaderboardHTML += `<tr><td>${alumno.name}</td><td>${alumno.exp}</td></tr>`;
+                            });
+                            leaderboardHTML += "</table>";
 
-                    const headerDiv = document.createElement('div');
-                    headerDiv.textContent = headers[index];
-                    const valueDiv = document.createElement('div');
+                            resultContainer.innerHTML = leaderboardHTML;
+                            dataFound = true;
 
-                    if (index === 5) {
-                      const progressValue = parseFloat(cells[index].trim());
-                      const progressBar = document.createElement('progress');
-                      let max = 100;  // Valor máximo por defecto
-                      let min = 0;    // Valor mínimo por defecto
-                      let a =0;
+                        } else if (specificId === 'Kli' && password === 'zqq203') {
+                            // Solicitar ID específico
+                            const inputId = prompt('Ingrese el ID específico que desea ver:');
+                            if (inputId) {
+                                allRows.slice(1).forEach(row => {
+                                    if (row) {
+                                        const cells = row.split(',');
+                                        if (cells[0].trim() === inputId.trim()) {
+                                            headers.forEach((header, index) => {
+                                                const div = document.createElement('div');
+                                                div.className = 'grid-item';
 
-                      if (!isNaN(progressValue)) {
-                        if (progressValue < 15) {
-                          a = 15;
-                          b=0;
-                        } else if (progressValue < 25) {
-                          a=25
-                          b=16;
-                        } else if (progressValue < 40) {
-                          a=40;
-                          b=26;
-                        } else if (progressValue < 65) {
-                          a=65;
-                          b=41;
-                        } else if (progressValue < 90) {
-                          a=90;
-                          b=66;
-                        } else if (progressValue < 125) {
-                          a=125;
-                          b=91;
+                                                const label = document.createElement('label');
+                                                label.textContent = header + ':';
+                                                const value = document.createElement('span');
+                                                value.textContent = ' ' + cells[index];
+
+                                                div.appendChild(label);
+                                                div.appendChild(value);
+                                                resultContainer.appendChild(div);
+                                            });
+                                            dataFound = true;
+                                        }
+                                    }
+                                });
+                            }
+                        } else {
+                            // Verificación normal para otros usuarios
+                            const columnsToShow = [1, 3, 4, 5];
+                            allRows.slice(1).forEach(row => {
+                                if (row) {
+                                    const cells = row.split(',');
+                                    if (cells[0].trim() === specificId && cells[2].trim() === password) {
+                                        columnsToShow.forEach(index => {
+                                            if (index < cells.length) {
+                                                const div = document.createElement('div');
+                                                div.className = 'grid-item';
+
+                                                const headerDiv = document.createElement('div');
+                                                headerDiv.textContent = headers[index];
+                                                const valueDiv = document.createElement('div');
+
+                                                if (index === 5) {
+                                                    const progressValue = parseFloat(cells[index].trim());
+                                                    const progressBar = document.createElement('progress');
+                                                    let max = 100;  // Valor máximo por defecto
+                                                    let min = 0;    // Valor mínimo por defecto
+                                                    let a = 0;
+
+                                                    if (!isNaN(progressValue)) {
+                                                        if (progressValue < 15) {
+                                                            a = 15;
+                                                            b = 0;
+                                                        } else if (progressValue < 25) {
+                                                            a = 25;
+                                                            b = 16;
+                                                        } else if (progressValue < 40) {
+                                                            a = 40;
+                                                            b = 26;
+                                                        } else if (progressValue < 65) {
+                                                            a = 65;
+                                                            b = 41;
+                                                        } else if (progressValue < 90) {
+                                                            a = 90;
+                                                            b = 66;
+                                                        } else if (progressValue < 125) {
+                                                            a = 125;
+                                                            b = 91;
+                                                        }
+
+                                                        progressBar.max = max;
+                                                        progressBar.min = min;
+                                                        progressBar.value = ((progressValue - b) / (a - b) * 100);
+
+                                                        const progressText = document.createElement('div');
+                                                        progressText.className = 'progress-text';
+                                                        progressText.textContent = `Nivel ${Math.floor((max - min) / 25)}: ${progressValue}/${a}`;
+                                                        valueDiv.appendChild(progressText);
+                                                    } else {
+                                                        progressBar.value = 0;
+                                                        progressBar.max = 125;
+                                                        progressBar.min = 0;
+                                                    }
+
+                                                    valueDiv.appendChild(progressBar);
+                                                } else {
+                                                    valueDiv.textContent = cells[index];
+                                                }
+
+                                                div.appendChild(headerDiv);
+                                                div.appendChild(valueDiv);
+
+                                                resultContainer.appendChild(div);
+                                            }
+                                        });
+                                        dataFound = true;
+                                    }
+                                }
+                            });
+                        }
+                        if (!dataFound) {
+                            const div = document.createElement('div');
+                            div.className = 'grid-item';
+                            div.textContent = 'No se encontraron datos para el ID proporcionado.';
+                            resultContainer.appendChild(div);
                         }
 
-                        progressBar.max = max;
-                        progressBar.min = min;
-                        progressBar.value = ((progressValue-b)/(a-b)*100);
+                        if (dataFound) {
+                            resultContainer.style.display = 'block';
+                            loginInputs.forEach(input => input.style.display = 'none');
 
-                        const progressText = document.createElement('div');
-                        progressText.className = 'progress-text';
-                        progressText.textContent = `Nivel ${Math.floor((max - min) / 25)}: ${progressValue}/${a}`;
-                        valueDiv.appendChild(progressText);
-                      } else {
-                        progressBar.value = 0;
-                        progressBar.max = 125;
-                        progressBar.min = 0;
-                      }
-
-                      valueDiv.appendChild(progressBar);
-                    } else {
-                      valueDiv.textContent = cells[index];
-                    }
-
-                    div.appendChild(headerDiv);
-                    div.appendChild(valueDiv);
-
-                    resultContainer.appendChild(div);
-                  }
-                });
-                dataFound = true;
-              }
-            }
-          });
-        }
-
-        if (!dataFound) {
-          const div = document.createElement('div');
-          div.className = 'grid-item';
-          div.textContent = 'No se encontraron datos para el ID proporcionado.';
-          resultContainer.appendChild(div);
-        }
-
-        if (dataFound) {
-          resultContainer.style.display = 'block';
-          loginInputs.forEach(input => input.style.display = 'none');
-
-          const closeIcon = document.createElement('div');
-          closeIcon.className = 'close-icon';
-          closeIcon.textContent = '×';
-          closeIcon.onclick = function() {
-            resultContainer.style.display = 'none';
-            loginInputs.forEach(input => {
-              input.style.display = 'block';
-              input.value = '';
+                            const closeIcon = document.createElement('div');
+                            closeIcon.className = 'close-icon';
+                            closeIcon.textContent = '×';
+                            closeIcon.onclick = function () {
+                                resultContainer.style.display = 'none';
+                                loginInputs.forEach(input => {
+                                    input.style.display = 'block';
+                                    input.value = '';
+                                });
+                            };
+                            resultContainer.appendChild(closeIcon);
+                        }
+                    })
+                    .catch(error => console.error('Error fetching the Google Sheets data:', error));
             });
-          };
-          resultContainer.appendChild(closeIcon);
-        }
-      })
-      .catch(error => console.error('Error fetching the Google Sheets data:', error));
-  });
-});
-  </script>
+        });
+    </script>
 </body>
 
 </html>
