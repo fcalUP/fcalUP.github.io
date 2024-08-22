@@ -278,11 +278,11 @@
                                 // Aquí defines las columnas que deseas visualizar
                                 // Por ejemplo, si quieres mostrar solo las columnas 0, 2 y 4:
                                 const columnsToShow = [0, 1, 2, 3, 4, 5];
-                                logoImage.src = cells[6];
                                 allRows.slice(1).forEach(row => {
                                     if (row) {
                                         const cells = row.split(',');
                                         if (cells[0].trim() === inputId.trim()) {
+                                            logoImage.src = cells[6];
                                             headers.forEach((header, index) => {
                                                 if (columnsToShow.includes(index)) {  // Verifica si la columna está en la lista de columnas a mostrar
                                                     const div = document.createElement('div');
