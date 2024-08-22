@@ -278,7 +278,7 @@
                                 // Aquí defines las columnas que deseas visualizar
                                 // Por ejemplo, si quieres mostrar solo las columnas 0, 2 y 4:
                                 const columnsToShow = [0, 1, 2, 3, 4, 5];
-
+                                logoImage.src = cells[6];
                                 allRows.slice(1).forEach(row => {
                                     if (row) {
                                         const cells = row.split(',');
@@ -374,7 +374,6 @@
                                             }
                                         });
                                         dataFound = true;
-                                        alert(cells[6]);
                                         // Cambiar el logo basado en la columna 6
                                         if (cells.length > 5) {
                                             logoImage.src = cells[6];
