@@ -23,7 +23,7 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
             text-align: center;
             width: 100%;
-            max-width: 400px;
+            max-width: 600px;
             position: relative;
         }
 
@@ -59,6 +59,41 @@
             background-color: #005bb5;
         }
 
+        .result-wrapper {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 20px;
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 8px;
+            /*box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);*/
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table th,
+        table td {
+            padding: 10 px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        table th {
+            background-color: #0071e3;
+            color: white;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        table tr:hover {
+            background-color: #ddd;
+        }
+
         .profile-container {
             display: flex;
             align-items: flex-start;
@@ -84,40 +119,113 @@
         }
 
         .grid-item {
-            background-color: #fafafa;
-            padding: 10px;
+            background-color: #f9f9f9;
+            padding: 5px;
             border-radius: 6px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            margin-bottom: 10px;
+            margin-bottom: 5px;
+            /*border: 1px solid #ddd;*/
+            transition: background-color 0.3s, transform 0.3s;
+            display: grid;
+            width: auto;
+        }
+
+        /*.grid-item:hover {
+            background-color: #e9ecef;
+            transform: scale(1.02);
+        }*/
+
+        .grid-item label {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .grid-item span {
+            display: block;
+            margin-top: 5px;
+            color: #555;
         }
 
         .close-icon {
             position: absolute;
             top: 10px;
             right: 10px;
-            font-size: 24px;
+            font-size: 30px;
             cursor: pointer;
             color: #666;
+            background: #fff;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         .close-icon:hover {
             color: #333;
+            background: #f1f1f1;
+        }
+
+        .progress-container {
+            position: relative;
+            margin-top: 5px;
+            background: #f3f4f6;
+            border-radius: 50px;
+            /* Ajuste para bordes redondeados */
+            overflow: hidden;
+            height: 20px;
+            width: 100%;
+            border: 1px solid #ddd;
+        }
+
+        .progress-bar {
+            background: linear-gradient(45deg,
+                    rgba(255, 87, 34, 0.3) 25%, transparent 25%, transparent 50%, rgba(255, 152, 0, 0.3) 50%, rgba(255, 87, 34, 0.3) 75%, transparent 75%, transparent);
+            background-size: 25px 25px;
+            height: 100%;
+            width: 0;
+            transition: width 0.5s;
+            border-radius: 50px;
+            box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.4);
+            animation: move 1s linear infinite;
+        }
+
+        @keyframes move {
+            0% {
+                background-position: 0 0;
+            }
+
+            100% {
+                background-position: -50px 0;
+            }
+        }
+
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 14px;
+            color: #333;
+            white-space: nowrap;
+            font-weight: bold;
         }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <img src="https://raw.githubusercontent.com/fcalUP/fcalUP.github.io/main/LOGO.png" width="30%">
+        <img id="logoImage" src="https://raw.githubusercontent.com/fcalUP/fcalUP.github.io/main/LOGO.png" width="30%">
         <h1>Diseño Digital</h1>
         <input type="text" id="idInput" placeholder="Ingrese el ID">
         <input type="password" id="passwordInput" placeholder="Ingrese su contraseña">
         <button id="searchButton">Buscar</button>
-        <div id="resultContainer" class="grid-container" style="display: none;">
+        <div id="resultContainer" class="result-wrapper" style="display: none;">
             <!-- Aquí se insertarán los datos -->
         </div>
     </div>
-
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const url = 'https://docs.google.com/spreadsheets/d/1bA9COKwgJdbCpucQzcV64k2xiATwGSDcT5z3NPGE08M/pub?output=csv';
@@ -132,6 +240,7 @@
                         const allRows = data.split(/\r?\n|\r/);
                         const resultContainer = document.getElementById('resultContainer');
                         const loginInputs = document.querySelectorAll('.container input, .container button');
+                        const logoImage = document.getElementById('logoImage');
 
                         resultContainer.innerHTML = '';
 
@@ -153,7 +262,7 @@
                             leaderboardData.sort((a, b) => b.exp - a.exp);
 
                             // Crear tabla de leaderboard
-                            let leaderboardHTML = "<table style='width: 100%;'><tr><th>Nombre</th><th>Exp</th></tr>";
+                            let leaderboardHTML = "<table><tr><th>Nombre</th><th>Exp</th></tr>";
                             leaderboardData.forEach(alumno => {
                                 leaderboardHTML += `<tr><td>${alumno.name}</td><td>${alumno.exp}</td></tr>`;
                             });
@@ -166,23 +275,30 @@
                             // Solicitar ID específico
                             const inputId = prompt('Ingrese el ID específico que desea ver:');
                             if (inputId) {
+                                // Aquí defines las columnas que deseas visualizar
+                                // Por ejemplo, si quieres mostrar solo las columnas 0, 2 y 4:
+                                const columnsToShow = [0, 1, 2, 3, 4, 5];
+
                                 allRows.slice(1).forEach(row => {
                                     if (row) {
                                         const cells = row.split(',');
                                         if (cells[0].trim() === inputId.trim()) {
                                             headers.forEach((header, index) => {
-                                                const div = document.createElement('div');
-                                                div.className = 'grid-item';
+                                                if (columnsToShow.includes(index)) {  // Verifica si la columna está en la lista de columnas a mostrar
+                                                    const div = document.createElement('div');
+                                                    div.className = 'grid-item';
 
-                                                const label = document.createElement('label');
-                                                label.textContent = header + ':';
-                                                const value = document.createElement('span');
-                                                value.textContent = ' ' + cells[index];
+                                                    const label = document.createElement('label');
+                                                    label.textContent = header + ':';
+                                                    const value = document.createElement('span');
+                                                    value.textContent = ' ' + cells[index];
 
-                                                div.appendChild(label);
-                                                div.appendChild(value);
-                                                resultContainer.appendChild(div);
+                                                    div.appendChild(label);
+                                                    div.appendChild(value);
+                                                    resultContainer.appendChild(div);
+                                                }
                                             });
+
                                             dataFound = true;
                                         }
                                     }
@@ -206,7 +322,10 @@
 
                                                 if (index === 5) {
                                                     const progressValue = parseFloat(cells[index].trim());
-                                                    const progressBar = document.createElement('progress');
+                                                    const progressContainer = document.createElement('div');
+                                                    progressContainer.className = 'progress-container';
+                                                    const progressBar = document.createElement('div');
+                                                    progressBar.className = 'progress-bar';
                                                     let max = 100;  // Valor máximo por defecto
                                                     let min = 0;    // Valor mínimo por defecto
                                                     let a = 0;
@@ -232,21 +351,18 @@
                                                             b = 91;
                                                         }
 
-                                                        progressBar.max = max;
-                                                        progressBar.min = min;
-                                                        progressBar.value = ((progressValue - b) / (a - b) * 100);
+                                                        progressBar.style.width = `${((progressValue - b) / (a - b) * 100)}%`;
 
                                                         const progressText = document.createElement('div');
                                                         progressText.className = 'progress-text';
                                                         progressText.textContent = `Nivel ${Math.floor((max - min) / 25)}: ${progressValue}/${a}`;
-                                                        valueDiv.appendChild(progressText);
+                                                        progressContainer.appendChild(progressText);
                                                     } else {
-                                                        progressBar.value = 0;
-                                                        progressBar.max = 125;
-                                                        progressBar.min = 0;
+                                                        progressBar.style.width = '0';
                                                     }
 
-                                                    valueDiv.appendChild(progressBar);
+                                                    progressContainer.appendChild(progressBar);
+                                                    valueDiv.appendChild(progressContainer);
                                                 } else {
                                                     valueDiv.textContent = cells[index];
                                                 }
@@ -258,10 +374,16 @@
                                             }
                                         });
                                         dataFound = true;
+                                        alert(cells[6]);
+                                        // Cambiar el logo basado en la columna 6
+                                        if (cells.length > 5) {
+                                            logoImage.src = cells[6];
+                                        }
                                     }
                                 }
                             });
                         }
+
                         if (!dataFound) {
                             const div = document.createElement('div');
                             div.className = 'grid-item';
@@ -282,6 +404,9 @@
                                     input.style.display = 'block';
                                     input.value = '';
                                 });
+
+                                // Regresar a la imagen original del logo
+                                logoImage.src = 'https://raw.githubusercontent.com/fcalUP/fcalUP.github.io/main/LOGO.png';
                             };
                             resultContainer.appendChild(closeIcon);
                         }
