@@ -294,12 +294,20 @@
         .consult-button:hover{
             color:#e3a60b;
         }
-
+        #fireworks-container {
+            position: fixed; /* Fijo en el fondo */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Detrás del contenido */
+        }
         
     </style>
 </head>
 
 <body>
+    <div id="fireworks-container"></div>
     <div class="container">
         <img id="logoImage" src="https://raw.githubusercontent.com/fcalUP/fcalUP.github.io/main/LOGO.png" width="30%">
         <h1>Diseño Digital</h1>
@@ -311,6 +319,109 @@
         </div>
     </div>
     <script>
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        document.getElementById('fireworks-container').appendChild(canvas);
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const fireworks = [];
+        const particles = [];
+
+        class Firework {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = canvas.height;
+                this.targetX = Math.random() * canvas.width;
+                this.targetY = Math.random() * canvas.height * 0.5;
+                this.velocityX = (this.targetX - this.x) * 0.003;
+                this.velocityY = (this.targetY - this.y) * 0.003;
+                this.exploded = false;
+            }
+
+            update() {
+                this.x += this.velocityX;
+                this.y += this.velocityY;
+
+                if (Math.abs(this.x - this.targetX) < 5 && Math.abs(this.y - this.targetY) < 5) {
+                    this.exploded = true;
+                    this.createParticles();
+                }
+            }
+
+            createParticles() {
+                const particleCount = 30 + Math.random() * 30;
+                for (let i = 0; i < particleCount; i++) {
+                    particles.push(new Particle(this.x, this.y));
+                }
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
+                ctx.fillStyle = getRandomColor();
+                ctx.fill();
+            }
+        }
+
+        class Particle {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.velocityX = (Math.random() - 0.5) * 5;
+                this.velocityY = (Math.random() - 0.5) * 5;
+                this.alpha = 1;
+                this.color = getRandomColor();
+            }
+
+            update() {
+                this.x += this.velocityX;
+                this.y += this.velocityY;
+                this.alpha -= 0.02;
+            }
+
+            draw() {
+                ctx.globalAlpha = this.alpha;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+                ctx.globalAlpha = 1;
+            }
+        }
+
+        function getRandomColor() {
+            const colors = ['#FF0000', '#00FF00', '#0000FF']; // Rojo, Verde, Azul
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+
+        function loop() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            if (Math.random() < 0.05) {
+                fireworks.push(new Firework());
+            }
+
+            for (let i = fireworks.length - 1; i >= 0; i--) {
+                fireworks[i].update();
+                fireworks[i].draw();
+                if (fireworks[i].exploded) {
+                    fireworks.splice(i, 1);
+                }
+            }
+
+            for (let i = particles.length - 1; i >= 0; i--) {
+                particles[i].update();
+                particles[i].draw();
+                if (particles[i].alpha <= 0) {
+                    particles.splice(i, 1);
+                }
+            }
+
+            requestAnimationFrame(loop);
+        }
+
+        loop();
         document.addEventListener('DOMContentLoaded', function () {
             const url = 'https://docs.google.com/spreadsheets/d/1bA9COKwgJdbCpucQzcV64k2xiATwGSDcT5z3NPGE08M/pub?output=csv';
 
