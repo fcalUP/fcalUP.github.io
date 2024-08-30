@@ -358,8 +358,14 @@
         <button id="searchButton">Buscar</button>
         <div id="resultContainer" class="result-wrapper" style="display: none;">
             <!-- Aquí se insertarán los datos -->
+       <div id="modal" class="modal">
+        <div class="modal-header">
+            <h2>Información de Puntos</h2>
+            <span class="modal-close" onclick="closeModal()">&times;</span>
         </div>
-        <table>
+        <div class="modal-content">
+            <!-- Aquí puedes añadir la tabla o la información que desees mostrar -->
+            <table>
                 <thead>
                     <tr>
                         <th>Nombre</th>
@@ -383,7 +389,6 @@
                 </tbody>
             </table>
         </div>
-    </div>
     </div>
     <script>
         const canvas = document.createElement('canvas');
