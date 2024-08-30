@@ -345,6 +345,29 @@
             font-size: 16px;
             text-align: center;
         }
+         /* Botón redondo en la esquina inferior izquierda */
+        .round-button {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            width: 50px;
+            height: 50px;
+            background-color: #f79621;
+            border-radius: 50%;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            z-index: 10;
+        }
+
+        .round-button:hover {
+            background-color: #f37222;
+        }
     </style>
 </head>
 
@@ -358,6 +381,9 @@
         <button id="searchButton">Buscar</button>
         <div id="resultContainer" class="result-wrapper" style="display: none;">
             <!-- Aquí se insertarán los datos -->
+            
+    <!-- Botón redondo -->
+    <div class="round-button" onclick="openModal()">+</div>
        <div id="modal" class="modal">
         <div class="modal-header">
             <h2>Información de Puntos</h2>
