@@ -652,10 +652,16 @@
                                         pointsDiv.className = 'points';
                                         pointsDiv.textContent = `Puntos: ${cells[4]}`;
 
+                                        // Mostrar Examen teórico
+                                        const exTeo = document.createElement('div');
+                                        exTeo.className = 'Examen Teórico';
+                                        exTeo.textContent = `Calif (50%): ${cells[11]}`;
+
                                         // Agregar nombre, tareas y puntos al contenedor
                                         infoContainer.appendChild(nameDiv);
                                         infoContainer.appendChild(tasksDiv);
                                         infoContainer.appendChild(pointsDiv);
+                                        infoContainer.appendChild(exTeo);
 
                                         // Agregar el contenedor al contenedor principal
                                         mainContainer.appendChild(infoContainer);
