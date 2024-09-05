@@ -657,11 +657,23 @@
                                         exTeo.className = 'Examen Teórico';
                                         exTeo.textContent = `Examen teórico (50%): ${cells[11]}`;
 
+                                        // Mostrar Examen Práctico
+                                        const exPra = document.createElement('div');
+                                        exPra.className = 'Examen Teórico';
+                                        exPra.textContent = `Examen práctico (50%): ${cells[12]}`;
+
+                                        // Mostrar Calificación Primer Parcial
+                                        const primPar = document.createElement('div');
+                                        primPar.className = 'Calificación';
+                                        primPar.textContent = `Calificación: ${cells[13]}`;
+
                                         // Agregar nombre, tareas y puntos al contenedor
                                         infoContainer.appendChild(nameDiv);
                                         infoContainer.appendChild(tasksDiv);
                                         infoContainer.appendChild(pointsDiv);
                                         infoContainer.appendChild(exTeo);
+                                        infoContainer.appendChild(exPra);
+                                        infoContainer.appendChild(primPar);
 
                                         // Agregar el contenedor al contenedor principal
                                         mainContainer.appendChild(infoContainer);
