@@ -17,11 +17,8 @@
         }
 
         .main-container {
-            background-color: #f9f9f9;
-            padding: 15px;
-            border-radius: 6px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            margin-bottom: 15px;
+            background-color: #e8c6f5;/*info conteiner*/
+            border-radius: 16px;
         }
 
         .level {
@@ -43,43 +40,8 @@
             margin-bottom: 10px;
         }
 
-        .progress-container {
-            position: relative;
-            background: #f3f4f6;
-            border-radius: 50px;
-            height: 20px;
-            width: 100%;
-            border: 1px solid #ddd;
-            margin-top: 10px;
-            /* Espacio arriba */
-        }
-
-        .progress-bar {
-            background: linear-gradient(45deg,
-                    rgba(255, 87, 34, 0.3) 25%, transparent 25%, transparent 50%, rgba(255, 152, 0, 0.3) 50%, rgba(255, 87, 34, 0.3) 75%, transparent 75%, transparent);
-            background-size: 25px 25px;
-            height: 100%;
-            width: 0;
-            transition: width 0.5s;
-            border-radius: 50px;
-            box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.4);
-            animation: move 1s linear infinite;
-        }
-
-        .progress-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 20px;
-            color: #333;
-            white-space: nowrap;
-            font-weight: bold;
-        }
-
-
         .container {
-            background-color: #fff;
+            background-color: #b207f5;/*main screen*/
             padding: 40px;
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -118,14 +80,15 @@
         }
 
         button:hover {
-            background-color: #f37222;
+            background-color: #db0d3a;
         }
 
+		/*lo que envuelve el resultado del perfil con datos*/
         .result-wrapper {
-            max-height: 400px;
+            max-height: 800px;
             overflow-y: auto;
             margin-top: 20px;
-            background-color: #fff;
+            background-color: #e8c6f5;
             padding: 10px;
             border-radius: 8px;
             /*box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);*/
@@ -144,29 +107,29 @@
         }
 
         table th {
-            background-color: #e36a00;
+            background-color: #e43efa;
             color: white;
         }
 
         table tr:nth-child(even) {
-            background-color: #f2f2f2;
+            background-color: #d487de;
         }
 
         table tr:hover {
-            background-color: #ddd;
+            background-color: rgba(219, 13, 58,.3);
         }
 
-        .profile-container {
+        /*.profile-container {
             display: flex;
             align-items: flex-start;
             margin-top: 20px;
-            background-color: #fff;
+            background-color: #ba56f5;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
             max-width: 600px;
             width: 100%;
-        }
+        }*/
 
         .profile-image img {
             max-width: 150px;
@@ -180,21 +143,15 @@
             width: 100%;
         }
 
-        .grid-item {
-            background-color: #f9f9f9;
+        /*.grid-item {
+            background-color: #1feaed;
             padding: 5px;
             border-radius: 6px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             margin-bottom: 5px;
-            /*border: 1px solid #ddd;*/
             transition: background-color 0.3s, transform 0.3s;
             display: grid;
             width: auto;
-        }
-
-        /*.grid-item:hover {
-            background-color: #e9ecef;
-            transform: scale(1.02);
         }*/
 
         .grid-item label {
@@ -227,15 +184,14 @@
 
         .close-icon:hover {
             color: #333;
-            background: #e3a60b;
+            background: #db0d3a;
         }
 
         .progress-container {
             position: relative;
             margin-top: 5px;
-            background: #f3f4f6;
+            background: #f5f3f6;
             border-radius: 50px;
-            /* Ajuste para bordes redondeados */
             overflow: hidden;
             height: 20px;
             width: 100%;
@@ -244,7 +200,7 @@
 
         .progress-bar {
             background: linear-gradient(45deg,
-                    rgba(255, 87, 34, 0.3) 25%, transparent 25%, transparent 50%, rgba(255, 152, 0, 0.3) 50%, rgba(255, 87, 34, 0.3) 75%, transparent 75%, transparent);
+                    rgba(104, 13, 158, 0.3) 25%, transparent 25%, transparent 50%, rgba(179, 77, 240, 0.3) 50%, rgba(135, 10, 209, 0.3) 75%, transparent 75%, transparent);
             background-size: 25px 25px;
             height: 100%;
             width: 0;
@@ -275,33 +231,22 @@
             font-weight: bold;
         }
 
+		/*comentarios dentro de cada perfil*/
         .info-box {
-            background-color: #fdf1e3;/* Color de fondo */
-            border-radius: 6px;/* Bordes redondeados */
+            background-color: rgba(104, 13, 158,.1);/* Color de fondo */
+            border-radius: 16px;/* Bordes redondeados */
             padding: 10px;/* Espaciado interno */
-            border: 1px solid #fccbb3;/* Borde con color */
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);/* Sombra del contenedor */
-            font-size: 14px;/* Tamaño de fuente */
+            font-size: 12px;/* Tamaño de fuente */
             color: #333;/* Color del texto */
             text-align: left;/* Alineación del texto */
             white-space: pre-wrap;/* Mantiene los saltos de línea en el texto */
-            border: 2px solid #f7764f;/* Borde más grueso y color distinto */
             font-weight: bold;/* Fuente en negrita */
             max-height: 200px; /* Altura máxima para evitar desbordamiento */
             overflow-y: auto; /* Permite el desplazamiento vertical si es necesario */
             word-wrap: break-word; /* Ajusta el texto largo para que se ajuste al contenedor */
         }
-        .consult-button:hover{
-            color:#e3a60b;
-        }
-        #fireworks-container {
-            position: fixed; /* Fijo en el fondo */
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1; /* Detrás del contenido */
-        }
+        
 
           /* Botón redondo en la esquina inferior izquierda */
         .round-button {
@@ -324,7 +269,7 @@
         }
 
         .round-button:hover {
-            background-color: #f37222;
+            background-color: #db0d3a;
         }
 
         /* Estilo para la ventana modal */
@@ -337,7 +282,7 @@
             transform: translate(-50%, -50%);
             width: 80%;
             max-width: 400px;
-            background-color: white;
+            background-color: #e1b6fa;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             padding: 20px;
@@ -369,11 +314,55 @@
             font-size: 16px;
             text-align: center;
         }
+        
+        /*HALLOWEEN*/
+        /* Estrellas parpadeando */
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle 1.5s infinite ease-in-out;
+        }
+        @keyframes twinkle {
+            0%,
+            100% {
+                opacity: 0.2;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+        /* Luna en la esquina */
+        .moon {
+            position: absolute;
+            top: 50px;
+            right: 50px;
+            width: 150px;
+            height: 150px;
+            background-color: #f0e68c;
+            border-radius: 50%;
+            box-shadow: 0 0 30px rgba(255, 255, 200, 0.5);
+        }
+        #halloween-background {
+            background: linear-gradient(to bottom, #0a0a23, #000000);
+            position: fixed; /* Fijo en el fondo */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Detrás del contenido */
+            overflow: hidden;
+        }
+        
     </style>
 </head>
 
 <body>
-    <div id="fireworks-container"></div>
+	<div id="halloween-background"></div>
+    <div class="moon"></div>
     <div class="container">
         <img id="logoImage" src="https://raw.githubusercontent.com/fcalUP/fcalUP.github.io/main/LOGO.png" width="30%">
         <h1>Diseño Digital</h1>
@@ -383,109 +372,22 @@
         <div id="resultContainer" class="result-wrapper" style="display: none;">
             <!-- Aquí se insertarán los datos -->
     <script>
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-        document.getElementById('fireworks-container').appendChild(canvas);
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        const fireworks = [];
-        const particles = [];
-
-        class Firework {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = canvas.height;
-                this.targetX = Math.random() * canvas.width;
-                this.targetY = Math.random() * canvas.height * 0.5;
-                this.velocityX = (this.targetX - this.x) * 0.003;
-                this.velocityY = (this.targetY - this.y) * 0.003;
-                this.exploded = false;
-            }
-
-            update() {
-                this.x += this.velocityX;
-                this.y += this.velocityY;
-
-                if (Math.abs(this.x - this.targetX) < 5 && Math.abs(this.y - this.targetY) < 5) {
-                    this.exploded = true;
-                    this.createParticles();
-                }
-            }
-
-            createParticles() {
-                const particleCount = 30 + Math.random() * 30;
-                for (let i = 0; i < particleCount; i++) {
-                    particles.push(new Particle(this.x, this.y));
-                }
-            }
-
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
-                ctx.fillStyle = getRandomColor();
-                ctx.fill();
-            }
+        // Función para generar un número aleatorio entre min y max
+        function getRandomNumber(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
         }
 
-        class Particle {
-            constructor(x, y) {
-                this.x = x;
-                this.y = y;
-                this.velocityX = (Math.random() - 0.5) * 5;
-                this.velocityY = (Math.random() - 0.5) * 5;
-                this.alpha = 1;
-                this.color = getRandomColor();
-            }
+        // Obtener el contenedor
+        const container = document.getElementById('halloween-background');
 
-            update() {
-                this.x += this.velocityX;
-                this.y += this.velocityY;
-                this.alpha -= 0.02;
-            }
-
-            draw() {
-                ctx.globalAlpha = this.alpha;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
-                ctx.fillStyle = this.color;
-                ctx.fill();
-                ctx.globalAlpha = 1;
-            }
+        // Crear estrellas
+        for (let i = 0; i < 100; i++) {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            star.style.top = `${getRandomNumber(0, 100)}vh`;
+            star.style.left = `${getRandomNumber(0, 100)}vw`;
+            container.appendChild(star);
         }
-
-        function getRandomColor() {
-            const colors = ['#FF0000', '#00FF00']; // Rojo, Verde
-            return colors[Math.floor(Math.random() * colors.length)];
-        }
-
-        function loop() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            if (Math.random() < 0.05) {
-                fireworks.push(new Firework());
-            }
-
-            for (let i = fireworks.length - 1; i >= 0; i--) {
-                fireworks[i].update();
-                fireworks[i].draw();
-                if (fireworks[i].exploded) {
-                    fireworks.splice(i, 1);
-                }
-            }
-
-            for (let i = particles.length - 1; i >= 0; i--) {
-                particles[i].update();
-                particles[i].draw();
-                if (particles[i].alpha <= 0) {
-                    particles.splice(i, 1);
-                }
-            }
-
-            requestAnimationFrame(loop);
-        }
-
-        loop();
         document.addEventListener('DOMContentLoaded', function () {
             const url = 'https://docs.google.com/spreadsheets/d/1bA9COKwgJdbCpucQzcV64k2xiATwGSDcT5z3NPGE08M/pub?output=csv';
 
@@ -719,8 +621,8 @@
                                         consultButton.textContent = 'PIDE UNA ASESORÍA';
                                         consultButton.style.display = 'inline-block'; // Hacer que el enlace sea un bloque
                                         consultButton.style.marginTop = '25px'; // Espacio superior
-                                        consultButton.style.backgroundColor = '#c9c9c9'; // Color gris
-                                        consultButton.style.color = '#333'; // Color del texto
+                                        consultButton.style.backgroundColor = '#b225f6'; // Color MORADO
+                                        consultButton.style.color = '#fff'; // Color del texto
                                         consultButton.style.padding = '10px';
                                         consultButton.style.textAlign = 'center';
                                         consultButton.style.textDecoration = 'none';
@@ -730,10 +632,10 @@
                                         // Estilo para el estado hover del botón
                                         consultButton.style.transition = 'background-color 0.3s'; // Transición suave
                                         consultButton.addEventListener('mouseover', () => {
-                                            consultButton.style.backgroundColor = '#ffc37a'; // Color gris oscuro
+                                            consultButton.style.backgroundColor = '#db0d3a'; // Color MORADO obscuro
                                         });
                                         consultButton.addEventListener('mouseout', () => {
-                                            consultButton.style.backgroundColor = '#c9c9c9'; // Color gris original
+                                            consultButton.style.backgroundColor = '#b225f6'; // Color gris original
                                         });
 
                                         // Agregar el botón al contenedor principal
@@ -795,6 +697,7 @@
     </script>
         </div>
     </div>
+    
     <!-- Botón redondo -->
     <div class="round-button" onclick="openModal()"><img src="https://raw.githubusercontent.com/fcalUP/fcalUP.github.io/main/LOGOBla.png" style="width:70%;"></div>
        <div id="modal" class="modal">
