@@ -2,18 +2,6 @@
         function getRandomNumber(min, max) {
             return Math.floor(Math.random() * (max - min + 1)) + min;
         }
-
-        // Obtener el contenedor
-        const container = document.getElementById('halloween-background');
-
-        // Crear estrellas
-        for (let i = 0; i < 100; i++) {
-            const star = document.createElement('div');
-            star.classList.add('star');
-            star.style.top = `${getRandomNumber(0, 100)}vh`;
-            star.style.left = `${getRandomNumber(0, 100)}vw`;
-            container.appendChild(star);
-        }
         document.addEventListener('DOMContentLoaded', function () {
             const url = 'https://docs.google.com/spreadsheets/d/1bA9COKwgJdbCpucQzcV64k2xiATwGSDcT5z3NPGE08M/pub?output=csv';
 
