@@ -2,77 +2,49 @@
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diseño Digital</title>
-	<link rel="stylesheet" src="style.css">
-</head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diseño Digital</title>
+  <link rel="stylesheet" href="style.css">  </head>
 
 <body>
-	<div id="christmas-background">
+  <div id="christmas-background">
     <div class="snowflake"></div>
+  </div>
+  <div class="container">
+    <img id="logoImage" src="https://raw.githubusercontent.com/fcalUP/fcalUP.github.io/main/LOGO.png" width="30%">
+    <h1>Diseño Digital</h1>
+    <input type="text" id="idInput" placeholder="Ingrese el ID">
+    <input type="password" id="passwordInput" placeholder="Ingrese su contraseña">
+    <button id="searchButton">Buscar</button>
+    <div id="resultContainer" class="result-wrapper" style="display: none;">
+      <script src="dd.js"></script>
     </div>
-    <div class="container">
-        <img id="logoImage" src="https://raw.githubusercontent.com/fcalUP/fcalUP.github.io/main/LOGO.png" width="30%">
-        <h1>Diseño Digital</h1>
-        <input type="text" id="idInput" placeholder="Ingrese el ID">
-        <input type="password" id="passwordInput" placeholder="Ingrese su contraseña">
-        <button id="searchButton">Buscar</button>
-        <div id="resultContainer" class="result-wrapper" style="display: none;">
-	    <script src="dd.js"></script>
-        </div>
+  </div>
+
+  <div class="round-button" onclick="openModal()"><img src="https://raw.githubusercontent.com/fcalUP/fcalUP.github.io/main/LOGOBla.png" style="width:70%;"></div>
+  <div id="modal" class="modal">
+    <div class="modal-header">
+      <h2>Información de Puntos</h2>
+      <span class="modal-close" onclick="closeModal()">&times;</span>
     </div>
-    
-    <!-- Botón redondo -->
-    <div class="round-button" onclick="openModal()"><img src="https://raw.githubusercontent.com/fcalUP/fcalUP.github.io/main/LOGOBla.png" style="width:70%;"></div>
-       <div id="modal" class="modal">
-        <div class="modal-header">
-            <h2>Información de Puntos</h2>
-            <span class="modal-close" onclick="closeModal()">&times;</span>
-        </div>
-        <div class="modal-content">
-            <!-- Aquí puedes añadir la tabla o la información que desees mostrar -->
-             <table>
-                <thead>
-                     <tr>
-    <th>Actividad</th>
-    <th>Puntos</th>
-  </tr>
-  <thead>
-  <tbody>
-  <tr>
-    <td>Juegos extra clase</td>
-    <td>1</td>
-  </tr>
-  <tr>
-    <td>Tareas entregadas antes de tiempo</td>
-    <td>2</td>
-  </tr>
-  <tr>
-    <td>Retos extra clase</td>
-    <td>2</td>
-  </tr>
-  <tr>
-    <td>Cambiar de nivel</td>
-    <td>1</td>
-  </tr>
-  <tr>
-    <td>Ganar juego en clase</td>
-    <td>3</td>
-  </tr>
-  <tr>
-    <td>Retos en clase</td>
-    <td>3</td>
-  </tr>
-  <tr>
-    <td>Entrega de proyecto perfecto</td>
-    <td>5</td>
-  </tr>
-                    <!-- Añade más filas según sea necesario -->
-                </tbody>
-            </table>
-        </div>
+    <div class="modal-content">
+      <table>
+        <thead>
+          <tr>
+            <th>Actividad</th>
+            <th>Puntos</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Juegos extra clase</td>
+            <td>1</td>
+          </tr>
+          </tbody>
+      </table>
     </div>
+  </div>
 </body>
 
 </html>
