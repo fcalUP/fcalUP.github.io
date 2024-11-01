@@ -355,7 +355,39 @@
 
         function closeModal() {
             document.getElementById("modal").style.display = "none";
-        }</script>
+        }
+  // Function to generate a random number between min and max
+    function getRandomNumber(min, max) {
+      return Math.floor(Math.random() * (max - min + 1))   
+ + min;
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const url = 'https://docs.google.com/spreadsheets/d/1bA9COKwgJdbCpucQzcV64k2xiATwGSDcT5z3NPGE08M/pub?output=csv';
+
+      document.getElementById('searchButton').addEventListener('click', function() {
+        const specificId = document.getElementById('idInput').value.trim();
+        const password = document.getElementById('passwordInput').value.trim();
+
+        // Your existing search functionality here
+
+        // Add more snowflakes dynamically based on search results (optional)
+        // For example, if a specific number of results are found, add more snowflakes
+      });
+
+      // Existing script for modal and leaderboard functionality
+
+      // Generate initial snowflakes (adjust number as desired)
+      for (let i = 0; i < 10; i++) {
+        const snowflake = document.createElement('div');
+        snowflake.classList.add('snowflake');
+        snowflake.style.left = `${getRandomNumber(0, 100)}%`;
+        snowflake.style.animationDelay   
+ = `${getRandomNumber(0, 5)}s`;
+        document.getElementById('christmas-background').appendChild(snowflake);
+      }
+    });
+  </script>
 </body>
 
 </html>
