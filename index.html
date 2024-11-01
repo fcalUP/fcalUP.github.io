@@ -215,15 +215,15 @@
                                         pointsDiv.className = 'points';
                                         pointsDiv.textContent = `Puntos: ${cells[4]}`;
 
-                                        // Mostrar Examen teórico
+                                        // Mostrar Primer Parcial
                                         const exTeo = document.createElement('div');
                                         exTeo.className = 'Examen Teórico';
-                                        exTeo.textContent = `Examen teórico (50%): ${cells[11]}`;
+                                        exTeo.textContent = `Primer Parcial (33.3%): ${cells[11]*.33}`;
 
-                                        // Mostrar Examen Práctico
+                                        // Mostrar Segundo Parcial
                                         const exPra = document.createElement('div');
                                         exPra.className = 'Examen Teórico';
-                                        exPra.textContent = `Examen práctico (50%): ${cells[12]}`;
+                                        exPra.textContent = `Segundo Parcial (33.3%): ${cells[12]}`;
 
                                         // Mostrar Calificación Primer Parcial
                                         const primPar = document.createElement('div');
@@ -288,12 +288,11 @@
                                         consultButton.style.textAlign = 'center';
                                         consultButton.style.textDecoration = 'none';
                                         consultButton.style.borderRadius = '44px';
-                                        //consultButton.style.border = '1px solid #757575'; // Borde gris
 
                                         // Estilo para el estado hover del botón
                                         consultButton.style.transition = 'background-color 0.3s'; // Transición suave
                                         consultButton.addEventListener('mouseover', () => {
-                                            consultButton.style.backgroundColor = '#db0d3a'; // Color MORADO obscuro
+                                            consultButton.style.backgroundColor = '#30b518'; // Color MORADO obscuro
                                         });
                                         consultButton.addEventListener('mouseout', () => {
                                             consultButton.style.backgroundColor = '#b225f6'; // Color gris original
