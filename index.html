@@ -223,12 +223,12 @@
                                         // Mostrar Segundo Parcial
                                         const exPra = document.createElement('div');
                                         exPra.className = 'Examen Teórico';
-                                        exPra.textContent = `Segundo Parcial (33.3%): ${cells[12]}`;
+                                        exPra.textContent = `Segundo Parcial (33.3%): ${cells[12]*.33}`;
 
-                                        // Mostrar Calificación Primer Parcial
+                                        // Mostrar restante para pasar
                                         const primPar = document.createElement('div');
                                         primPar.className = 'Calificación';
-                                        primPar.textContent = `Calificación: ${cells[13]}`;
+                                        primPar.textContent = `Mínimo para pasar con 6: ${cells[13]}`;
 
                                         // Agregar nombre, tareas y puntos al contenedor
                                         infoContainer.appendChild(nameDiv);
