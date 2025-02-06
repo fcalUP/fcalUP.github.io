@@ -52,21 +52,15 @@
 
             // Itera sobre las filas de la tabla
             tabla.querySelectorAll('tr').forEach((fila, rowIndex) => {
-              const nuevaFila = nuevaTabla.insertRow();
-
-              // Itera sobre las celdas de cada fila
-              fila.querySelectorAll('td, th').forEach((celda, colIndex) => {
-                const nuevaCelda = nuevaFila.insertCell();
-                nuevaCelda.textContent = celda.textContent;
-
-                // Busca el ID y muestra la información
-                if (rowIndex > 0 && colIndex === 0 && celda.textContent === idInput) {
-                  // Limpia la tabla y añade solo la fila coincidente
-                  nuevaTabla.innerHTML = '';
-                  nuevaTabla.appendChild(nuevaFila);
-                  return; // Sale del bucle al encontrar la coincidencia
-                }
-              });
+              const celdas = fila.querySelectorAll('td, th');
+              if (celdas.length > 1 && rowIndex > 0 && celdas[1].textContent === idInput) { // Verifica que haya al menos 2 celdas y que el ID esté en la segunda columna (índice 1)
+                const nuevaFila = nuevaTabla.insertRow();
+                celdas.forEach(celda => {
+                  const nuevaCelda = nuevaFila.insertCell();
+                  nuevaCelda.textContent = celda.textContent;
+                });
+                return; // Sale del bucle al encontrar la coincidencia
+              }
             });
           } else {
             resultadoDiv.textContent = 'No se encontró la tabla en la hoja de cálculo.';
