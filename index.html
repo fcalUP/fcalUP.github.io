@@ -1,75 +1,150 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <title>Búsqueda en Google Sheets</title>
-  <style>
-    #resultado {
-      margin-top: 20px;
-      border-collapse: collapse;
-      width: 100%;
-    }
+    <title>Búsqueda en Google Sheets</title>
+    <style>
+        /* Estilos generales */
+        body {
+            font-family: sans-serif;
+        }
 
-    #resultado td, #resultado th {
-      border: 1px solid #ddd;
-      padding: 8px;
-      text-align: left;
-    }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
 
-    #resultado th {
-      background-color: #f2f2f2;
-    }
-  </style>
+        #resultado {
+            margin-top: 20px;
+        }
+
+        /* Estilos de la tabla */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        th,
+        td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background-color: #f5f5f5;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #777;
+        }
+
+        tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        /* Estilos para el mensaje de "no se encontraron resultados" */
+        #resultado p {
+            text-align: center;
+            color: #999;
+            margin-top: 20px;
+        }
+
+        /* Estilos para el diseño de filas */
+        #resultado table tr {
+            display: flex;
+            /* Convierte las filas en flexbox */
+            flex-wrap: wrap;
+            /* Permite que las celdas se ajusten a varias líneas */
+        }
+
+        #resultado table td {
+            flex: 1 0 0;
+            /* Distribuye el espacio disponible entre las celdas */
+            width: 33.33%;
+            /* Ocupa un tercio del ancho en pantallas medianas y grandes */
+            box-sizing: border-box;
+            /* Incluye el padding y el border en el ancho de la celda */
+        }
+
+        /* Estilos para pantallas pequeñas */
+        @media (max-width: 600px) {
+            #resultado table td {
+                width: 50%;
+                /* Ocupa la mitad del ancho en pantallas pequeñas */
+            }
+        }
+    </style>
 </head>
+
 <body>
-  <h1>Búsqueda de ID en Google Sheets</h1>
-  <input type="text" id="idInput" placeholder="Ingresa el ID">
-  <button onclick="buscarID()">Buscar</button>
-  <div id="resultado"></div>
+    <h1>Alumnos Posgrados 1252</h1>
+    <input type="text" id="idInput" placeholder="Ingresa el ID">
+    <button onclick="buscarID()">Buscar</button>
+    <div id="resultado"></div>
 
-  <script>
-    function buscarID() {
-      const idInput = document.getElementById('idInput').value;
-      const resultadoDiv = document.getElementById('resultado');
+    <script>
+        function buscarID() {
+            const idInput = document.getElementById('idInput').value;
+            const resultadoDiv = document.getElementById('resultado');
 
-      // URL de tu hoja de cálculo publicada (reemplaza con la tuya)
-      const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRZffO0_-wKwPRAlDmVJTpt2x5ByswlpzHT61Y8GBENruQlBka_4cM6FovmCYJLc4a0V4jdj337aIvY/pubhtml';
+            // Limpia los resultados anteriores
+            resultadoDiv.innerHTML = '';
 
-      fetch(url)
-        .then(response => response.text())
-        .then(html => {
-          // Parsea el HTML de la hoja de cálculo
-          const parser = new DOMParser();
-          const doc = parser.parseFromString(html, 'text/html');
+            // URL de tu hoja de cálculo publicada (reemplaza con la tuya)
+            const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRZffO0_-wKwPRAlDmVJTpt2x5ByswlpzHT61Y8GBENruQlBka_4cM6FovmCYJLc4a0V4jdj337aIvY/pubhtml?gid=1954923098&single=true'
 
-          // Encuentra la tabla en la hoja de cálculo (ajusta el selector si es necesario)
-          const tabla = doc.querySelector('table');
+            fetch(url)
+                .then(response => response.text())
+                .then(html => {
+                    // Parsea el HTML de la hoja de cálculo
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
 
-          if (tabla) {
-            // Crea la tabla en el HTML
-            const nuevaTabla = document.createElement('table');
-            resultadoDiv.innerHTML = ''; // Limpia resultados anteriores
-            resultadoDiv.appendChild(nuevaTabla);
+                    // Encuentra la tabla en la hoja de cálculo (ajusta el selector si es necesario)
+                    const tabla = doc.querySelector('table');
 
-            // Itera sobre las filas de la tabla
-            tabla.querySelectorAll('tr').forEach((fila, rowIndex) => {
-              const celdas = fila.querySelectorAll('td, th');
-              if (celdas.length > 1 && rowIndex > 0 && celdas[1].textContent === idInput) { // Verifica que haya al menos 2 celdas y que el ID esté en la segunda columna (índice 1)
-                const nuevaFila = nuevaTabla.insertRow();
-                celdas.forEach(celda => {
-                  const nuevaCelda = nuevaFila.insertCell();
-                  nuevaCelda.textContent = celda.textContent;
+                    if (tabla) {
+                        // Itera sobre las filas de la tabla
+                        tabla.querySelectorAll('tr').forEach((fila, rowIndex) => {
+                            if (rowIndex > 0) { // Ignora la primera fila (encabezados)
+                                const celdas = fila.querySelectorAll('td, th');
+                                if (celdas.length > 2) { // Asegúrate de que haya al menos tres celdas
+                                    const idColumnaB = celdas[1].textContent; // Obtiene el valor de la segunda columna (índice 1)
+
+                                    if (idInput === idColumnaB) { // Compara idInput con el valor de la columna B
+                                        // Crea la tabla en el HTML (si aún no se ha creado)
+                                        if (resultadoDiv.querySelector('table') === null) {
+                                            const nuevaTabla = document.createElement('table');
+                                            resultadoDiv.appendChild(nuevaTabla);
+                                        }
+
+                                        const nuevaFila = resultadoDiv.querySelector('table').insertRow();
+                                        celdas.forEach((celda, index) => { // Itera sobre todas las celdas de la fila
+                                            if (index > 1) { // Ignora la primera y la segunda celda (índices 0 y 1)
+                                                const nuevaCelda = nuevaFila.insertCell();
+                                                nuevaCelda.textContent = celda.textContent;
+                                            }
+                                        });
+                                        return; // Sale del bucle al encontrar la coincidencia
+                                    }
+                                }
+                            }
+                        });
+
+                        // Si no se encontró ninguna coincidencia, muestra un mensaje
+                        if (resultadoDiv.querySelector('table') === null) {
+                            resultadoDiv.innerHTML = '<p>No se encontró ningún resultado para el ID ingresado.</p>';
+                        }
+                    } else {
+                        resultadoDiv.textContent = 'No se encontró la tabla en la hoja de cálculo.';
+                    }
+                })
+                .catch(error => {
+                    resultadoDiv.textContent = 'Error al cargar la hoja de cálculo: ' + error;
                 });
-                return; // Sale del bucle al encontrar la coincidencia
-              }
-            });
-          } else {
-            resultadoDiv.textContent = 'No se encontró la tabla en la hoja de cálculo.';
-          }
-        })
-        .catch(error => {
-          resultadoDiv.textContent = 'Error al cargar la hoja de cálculo: ' + error;
-        });
-    }
-  </script>
+        }
+    </script>
 </body>
+
 </html>
