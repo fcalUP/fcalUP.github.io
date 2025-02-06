@@ -1,81 +1,81 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Acceder a Google Sheets desde HTML</title>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://apis.google.com/js/api.js"></script>
-  <script>
-    function handleClientLoad() {
-      gapi.load('client:auth2', initClient);
+  <title>Búsqueda en Google Sheets</title>
+  <style>
+    #resultado {
+      margin-top: 20px;
+      border-collapse: collapse;
+      width: 100%;
     }
 
-    function initClient() {
-      gapi.client.init({
-        apiKey: 'AIzaSyC3n_SczmI9jZWrEqBgkLEMcDMjiMvOca8', // Reemplaza con tu clave de API
-        clientId: '70525360510-dj1i0l7v2fekf44no3no6rasthmp9t8v.apps.googleusercontent.com', // Reemplaza con tu ID de cliente
-        discoveryDocs: ['https://sheets.googleapis.com/$discovery/rest?version=v4'],
-        scope: 'https://www.googleapis.com/auth/spreadsheets'
-      }).then(function () {
-        // Escucha los cambios en el estado de autenticación.
-        gapi.auth2.getAuthInstance().isSignedIn.listen(updateSignInStatus);
-
-        // Carga el estado de autenticación actual.
-        updateSignInStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
-      });
+    #resultado td, #resultado th {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
     }
 
-    function updateSignInStatus(isSignedIn) {
-      if (isSignedIn) {
-        // El usuario ha iniciado sesión, puedes acceder a la hoja de cálculo.
-        leerHojaDeCalculo();
-      } else {
-        // El usuario no ha iniciado sesión, muestra el botón de inicio de sesión.
-        $('#signin-button').click(function() {
-          gapi.auth2.getAuthInstance().signIn();
-        });
-      }
+    #resultado th {
+      background-color: #f2f2f2;
     }
-
-    function leerHojaDeCalculo() {
-      gapi.client.sheets.spreadsheets.values.get({
-        spreadsheetId: '1Ap0ao7g5X6YN86vTq5Yng3YD9uiqmN9Wv93lR_DDnUM', // Reemplaza con el ID de tu hoja de cálculo
-        range: 'Lista!A:F' // Reemplaza con el rango de celdas que deseas leer
-      }).then(function(response) {
-        var values = response.result.values;
-        if (values && values.length > 0) {
-          // Itera sobre los datos y haz lo que necesites.
-          for (var i = 0; i < values.length; i++) {
-            var row = values[i];
-            console.log(row[0] + ', ' + row[1]);
-          }
-        } else {
-          console.log('No se encontraron datos.');
-        }
-      }, function(response) {
-        console.error('Error: ' + response.result.error.message);
-      });
-    }
-
-    function modificarHojaDeCalculo() {
-      gapi.client.sheets.spreadsheets.values.update({
-        spreadsheetId: '1Ap0ao7g5X6YN86vTq5Yng3YD9uiqmN9Wv93lR_DDnUM', // Reemplaza con el ID de tu hoja de cálculo
-        range: 'Lista!A:F', // Reemplaza con el rango de celdas que deseas modificar
-        valueInputOption: 'USER_ENTERED',
-        resource: {
-          values: [['Nuevo valor 1', 'Nuevo valor 2'], ['Nuevo valor 3', 'Nuevo valor 4']] // Reemplaza con los nuevos valores
-        }
-      }).then(function(response) {
-        console.log('Hoja de cálculo modificada.');
-      }, function(response) {
-        console.error('Error: ' + response.result.error.message);
-      });
-    }
-  </script>
+  </style>
 </head>
 <body>
-  <button id="signin-button">Iniciar sesión con Google</button>
-  <script async defer src="https://apis.google.com/js/api:client:auth2"
-    onload="this.onload=function(){};handleClientLoad()"
-    onerror="this.onerror=function(){};handleClientLoad()"></script>
+  <h1>Búsqueda de ID en Google Sheets</h1>
+  <input type="text" id="idInput" placeholder="Ingresa el ID">
+  <button onclick="buscarID()">Buscar</button>
+  <div id="resultado"></div>
+
+  <script>
+    function buscarID() {
+      const idInput = document.getElementById('idInput').value;
+      const resultadoDiv = document.getElementById('resultado');
+
+      // URL de tu hoja de cálculo publicada (reemplaza con la tuya)
+      const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRZffO0_-wKwPRAlDmVJTpt2x5ByswlpzHT61Y8GBENruQlBka_4cM6FovmCYJLc4a0V4jdj337aIvY/pubhtml';
+
+      fetch(url)
+        .then(response => response.text())
+        .then(html => {
+          // Parsea el HTML de la hoja de cálculo
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, 'text/html');
+
+          // Encuentra la tabla en la hoja de cálculo (ajusta el selector si es necesario)
+          const tabla = doc.querySelector('table');
+
+          if (tabla) {
+            // Crea la tabla en el HTML
+            const nuevaTabla = document.createElement('table');
+            resultadoDiv.innerHTML = ''; // Limpia resultados anteriores
+            resultadoDiv.appendChild(nuevaTabla);
+
+            // Itera sobre las filas de la tabla
+            tabla.querySelectorAll('tr').forEach((fila, rowIndex) => {
+              const nuevaFila = nuevaTabla.insertRow();
+
+              // Itera sobre las celdas de cada fila
+              fila.querySelectorAll('td, th').forEach((celda, colIndex) => {
+                const nuevaCelda = nuevaFila.insertCell();
+                nuevaCelda.textContent = celda.textContent;
+
+                // Busca el ID y muestra la información
+                if (rowIndex > 0 && colIndex === 0 && celda.textContent === idInput) {
+                  // Limpia la tabla y añade solo la fila coincidente
+                  nuevaTabla.innerHTML = '';
+                  nuevaTabla.appendChild(nuevaFila);
+                  return; // Sale del bucle al encontrar la coincidencia
+                }
+              });
+            });
+          } else {
+            resultadoDiv.textContent = 'No se encontró la tabla en la hoja de cálculo.';
+          }
+        })
+        .catch(error => {
+          resultadoDiv.textContent = 'Error al cargar la hoja de cálculo: ' + error;
+        });
+    }
+  </script>
 </body>
 </html>
