@@ -4,116 +4,173 @@
 <head>
     <title>Búsqueda en Google Sheets</title>
     <style>
-      /* Estilos generales */
-body {
-    font-family: sans-serif;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    margin: 0;
-    background-color: #f4f4f4; /* Color de fondo suave */
-}
+        /* Estilos generales */
+        body {
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
 
-h1 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #333; /* Color de texto más oscuro */
-}
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
 
-#resultado {
-    margin-top: 20px;
-    width: 80%; /* Ancho máximo del contenedor de resultados */
-    max-width: 900px; /* Ancho máximo en pantallas grandes */
-}
+        #resultado {
+            margin-top: 20px;
+            width: 80%;
+            max-width: 900px;
+        }
 
-/* Estilos de la tabla */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px; /* Espacio inferior para separar la tabla del mensaje */
-}
+        /* Estilos de la tabla */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
 
-th,
-td {
-    padding: 12px 15px;
-    text-align: left;
-    border-bottom: 1px solid #eee;
-}
+        th,
+        td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+            background-color: #fff;
+        }
 
-th {
-    background-color: #fff; /* Fondo blanco para los encabezados */
-    font-weight: 600;
-    text-transform: uppercase;
-    color: #777;
-}
+        th {
+            background-color: #f8f8f8;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #555;
+        }
 
-tr:hover {
-    background-color: #f9f9f9;
+        tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        /* Estilos para el mensaje de "no se encontraron resultados" */
+        #resultado p {
+            text-align: center;
+            color: #999;
+            margin-top: 0;
+        }
+
+        /* Estilos para el input y el botón */
+        input[type="text"] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+            width: 60%;
+            max-width: 300px;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Estilos para la info de columnas */
+        #infoColumnas {
+            display: flex;
+            gap: 10px; /* Espacio entre los elementos */
+            margin-bottom: 10px; /* Margen inferior */
+        }
+
+        #infoColumnas span {
+            padding: 5px 10px; /* Padding para los elementos */
+            background-color: #f0f0f0; /* Color de fondo */
+            border-radius: 5px; /* Bordes redondeados */
+        }
     </style>
 </head>
 
 <body>
-    <h1>Alumnos Posgrados 1252</h1>
+    <h1>Búsqueda de ID en Google Sheets</h1>
     <input type="text" id="idInput" placeholder="Ingresa el ID">
-    <button onclick="buscarID()"style="margin-top:3%;">Buscar</button>
+    <button onclick="buscarID()" style="margin-top:3%;">Buscar</button>
+
+    <div id="infoColumnas"></div>
     <div id="resultado"></div>
 
     <script>
         function buscarID() {
             const idInput = document.getElementById('idInput').value;
             const resultadoDiv = document.getElementById('resultado');
+            const infoColumnasDiv = document.getElementById('infoColumnas');
 
-            // Limpia los resultados anteriores
-            resultadoDiv.innerHTML = '';
+            resultadoDiv.innerHTML = ''; // Limpia los resultados anteriores
+            infoColumnasDiv.innerHTML = ''; // Limpia la info de columnas anterior
 
-            // URL de tu hoja de cálculo publicada (reemplaza con la tuya)
-            const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRZffO0_-wKwPRAlDmVJTpt2x5ByswlpzHT61Y8GBENruQlBka_4cM6FovmCYJLc4a0V4jdj337aIvY/pubhtml?gid=1954923098&single=true'
+            const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQqFwlx9wLsaGVBYL5gqcyFaqhW2Qw1o_PnwoWAc4u9LdxmfCzuvyfRznYK1qWGkEO3ADTeuFPw4GFr/pubhtml';
 
             fetch(url)
                 .then(response => response.text())
                 .then(html => {
-                    // Parsea el HTML de la hoja de cálculo
                     const parser = new DOMParser();
                     const doc = parser.parseFromString(html, 'text/html');
-
-                    // Encuentra la tabla en la hoja de cálculo (ajusta el selector si es necesario)
                     const tabla = doc.querySelector('table');
 
                     if (tabla) {
-                        // Itera sobre las filas de la tabla
-                        tabla.querySelectorAll('tr').forEach((fila, rowIndex) => {
-                            if (rowIndex > 0) { // Ignora la primera fila (encabezados)
-                                const celdas = fila.querySelectorAll('td, th');
-                                if (celdas.length > 2) { // Asegúrate de que haya al menos tres celdas
-                                    const idColumnaB = celdas[1].textContent; // Obtiene el valor de la segunda columna (índice 1)
+                        let resultadosEncontrados = false;
+                        let infoColumnasMostrada = false;
 
-                                    if (idInput === idColumnaB) { // Compara idInput con el valor de la columna B
-                                        // Crea la tabla en el HTML (si aún no se ha creado)
-                                        if (resultadoDiv.querySelector('table') === null) {
+                        tabla.querySelectorAll('tr').forEach((fila, rowIndex) => {
+                            if (rowIndex > 0) {
+                                const celdas = fila.querySelectorAll('td, th');
+                                if (celdas.length > 5) {
+                                    const idColumnaA = celdas[1].textContent;
+
+                                    if (idInput === idColumnaA) {
+                                        resultadosEncontrados = true;
+
+                                        if (!infoColumnasMostrada) {                                         
+                                            const infoColumna2 = document.createElement('span');
+                                            infoColumna2.textContent = celdas[2].textContent;
+                                            infoColumnasDiv.appendChild(infoColumna2);
+
+                                            const infoColumna3 = document.createElement('span');
+                                            infoColumna3.textContent = celdas[3].textContent;
+                                            infoColumnasDiv.appendChild(infoColumna3);
+
+                                            infoColumnasMostrada = true;
+                                        }
+
+                                        if (!resultadoDiv.querySelector('table')) {
                                             const nuevaTabla = document.createElement('table');
                                             resultadoDiv.appendChild(nuevaTabla);
                                         }
 
                                         const nuevaFila = resultadoDiv.querySelector('table').insertRow();
-                                        celdas.forEach((celda, index) => { // Itera sobre todas las celdas de la fila
-                                            if (index > 1) { // Ignora la primera y la segunda celda (índices 0 y 1)
-                                                const nuevaCelda = nuevaFila.insertCell();
-                                                nuevaCelda.textContent = celda.textContent;
-                                            }
-                                        });
-                                        return; // Sale del bucle al encontrar la coincidencia
+
+                                        const celdaColumna4 = nuevaFila.insertCell();
+                                        celdaColumna4.textContent = celdas[4].textContent;
+
+                                        const celdaColumna5 = nuevaFila.insertCell();
+                                        celdaColumna5.textContent = celdas[5].textContent;
                                     }
                                 }
                             }
                         });
 
-                        // Si no se encontró ninguna coincidencia, muestra un mensaje
-                        if (resultadoDiv.querySelector('table') === null) {
-                            resultadoDiv.innerHTML = '<p>No se encontró ningún resultado para el ID ingresado.</p>';
+                        if (!resultadosEncontrados) {
+                            resultadoDiv.innerHTML = '<p>No se encontraron resultados para el ID ingresado.</p>';
                         }
+
                     } else {
                         resultadoDiv.textContent = 'No se encontró la tabla en la hoja de cálculo.';
                     }
