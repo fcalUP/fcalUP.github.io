@@ -1,39 +1,75 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Clases 1258</title>
+    <title>Información por día de la semana</title>
     <style>
         body {
             font-family: sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+            margin: 0;
+            padding: 0;
         }
 
         #contenedor-dia {
-            margin-bottom: 20px;
+            margin: 20px;
         }
 
         #resultado {
-            margin-top: 20px;
+            margin: 20px;
+            overflow-x: auto; /* Permite desplazamiento horizontal en pantallas pequeñas */
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            min-width: 600px; /* Evita que la tabla se haga demasiado pequeña */
         }
 
         th, td {
-            border: 1px solid #ddd;
+            border: 1px solid #c2e5b0;
             padding: 8px;
             text-align: left;
+            white-space: nowrap; /* Evita que el texto se envuelva */
         }
 
         th {
-            background-color: #f2f2f2;
+            background-color: #a7d1ab;
+            color: #fff;
+        }
+
+        select, button {
+            width: 100%; /* Ocupan todo el ancho disponible */
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #c2e5b0;
+            border-radius: 5px;
+            box-sizing: border-box; /* Incluye el borde en el ancho total */
+        }
+
+        button {
+            background-color: #b8e0b9;
+            color: #333;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #c7e9c8;
+        }
+
+        @media (max-width: 600px) {
+            table {
+                font-size: 12px; /* Reduce el tamaño de la fuente en pantallas pequeñas */
+            }
         }
     </style>
 </head>
 <body>
     <div id="contenedor-dia">
-        <label for="dia">Día: </label>
+        <label for="dia">Selecciona un día de la semana:</label>
         <select id="dia">
             <option value="Lunes">Lunes</option>
             <option value="Martes">Martes</option>
@@ -41,7 +77,6 @@
             <option value="Jueves">Jueves</option>
             <option value="Viernes">Viernes</option>
             <option value="Sábado">Sábado</option>
-            <option value="Domingo">Domingo</option>
         </select>
         <button id="buscar">Buscar</button>
     </div>
@@ -54,7 +89,7 @@
             const resultadoDiv = document.getElementById('resultado');
             resultadoDiv.innerHTML = '';
 
-            const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSjDor2EWx8ypI9qFtevNxgi84KiEzjDeIM4vST892VSXknnIA_Tv-dH21PTh7dXCmEzmoj9nh2nYTA/pubhtml?gid=796143355&single=true'; // Reemplaza con tu URL
+            const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSjDor2EWx8ypI9qFtevNxgi84KiEzjDeIM4vST892VSXknnIA_Tv-dH21PTh7dXCmEzmoj9nh2nYTA/pubhtml?gid=419729999&single=true'; // Reemplaza con tu URL
 
             fetch(url)
                 .then(response => response.text())
@@ -65,39 +100,51 @@
 
                     if (tabla) {
                         let resultadosEncontrados = false;
-                        const nuevaTabla = document.createElement('table');
-
-                        // Crear encabezados de la nueva tabla
-                        const encabezadoFila = document.createElement('tr');
-                        const encabezados = ['Programa', 'Clase', 'Número de clase', 'Salón', 'Profesor'];
-                        encabezados.forEach(encabezado => {
-                            const th = document.createElement('th');
-                            th.textContent = encabezado;
-                            encabezadoFila.appendChild(th);
-                        });
-                        nuevaTabla.appendChild(encabezadoFila);
+                        const resultados = []; // Array para almacenar los resultados
 
                         tabla.querySelectorAll('tr').forEach((fila, rowIndex) => {
                             if (rowIndex > 0) {
                                 const celdas = fila.querySelectorAll('td, th');
-                                if (celdas.length > 12) {
-                                    const diaTabla = celdas[13].textContent.trim();
+                                if (celdas.length > 11) {
+                                    const diaTabla = celdas[12].textContent.trim();
 
                                     if (diaTabla === diaSeleccionado) {
                                         resultadosEncontrados = true;
-                                        const nuevaFila = document.createElement('tr');
-                                        [1, 4, 5, 9, 12].forEach(indice => { // Índices de las columnas deseadas
-                                            const td = document.createElement('td');
-                                            td.textContent = celdas[indice].textContent;
-                                            nuevaFila.appendChild(td);
+                                        const filaData = [];
+                                        [1, 3, 6, 8, 11].forEach(indice => {
+                                            filaData.push(celdas[indice].textContent);
                                         });
-                                        nuevaTabla.appendChild(nuevaFila);
+                                        resultados.push(filaData);
                                     }
                                 }
                             }
                         });
 
                         if (resultadosEncontrados) {
+                            // Ordenar los resultados por la columna del salón (índice 3)
+                            resultados.sort((a, b) => a[3].localeCompare(b[3]));
+
+                            // Crear la tabla ordenada
+                            const nuevaTabla = document.createElement('table');
+                            const encabezadoFila = document.createElement('tr');
+                            const encabezados = ['Programa', 'Clase', 'Fecha de inicio', 'Salón', 'Número de clase', 'Profesor'];
+                            encabezados.forEach(encabezado => {
+                                const th = document.createElement('th');
+                                th.textContent = encabezado;
+                                encabezadoFila.appendChild(th);
+                            });
+                            nuevaTabla.appendChild(encabezadoFila);
+
+                            resultados.forEach(filaData => {
+                                const nuevaFila = document.createElement('tr');
+                                filaData.forEach(celda => {
+                                    const td = document.createElement('td');
+                                    td.textContent = celda;
+                                    nuevaFila.appendChild(td);
+                                });
+                                nuevaTabla.appendChild(nuevaFila);
+                            });
+
                             resultadoDiv.appendChild(nuevaTabla);
                         } else {
                             resultadoDiv.innerHTML = '<p>No se encontraron resultados para el día seleccionado.</p>';
