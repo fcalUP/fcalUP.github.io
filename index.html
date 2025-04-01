@@ -107,7 +107,7 @@
             const resultadoDiv = document.getElementById('resultado');
             resultadoDiv.innerHTML = '';
 
-            const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSjDor2EWx8ypI9qFtevNxgi84KiEzjDeIM4vST892VSXknnIA_Tv-dH21PTh7dXCmEzmoj9nh2nYTA/pubhtml?gid=419729999&single=true'; // Reemplaza con tu URL
+            const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRzBL2UgrJzY6-BXK-RMEN6t8GppU8TlnehQkzAf1vxLdL05Zc4mwVF2zNq-JyC0-O8f883iYzunFXB/pubhtml'; // Reemplaza con tu URL
 
             fetch(url)
                 .then(response => response.text())
@@ -124,12 +124,12 @@
                             if (rowIndex > 0) {
                                 const celdas = fila.querySelectorAll('td, th');
                                 if (celdas.length > 11) {
-                                    const diaTabla = celdas[12].textContent.trim();
+                                    const diaTabla = celdas[6].textContent.trim();
 
                                     if (diaTabla === diaSeleccionado) {
                                         resultadosEncontrados = true;
                                         const filaData = [];
-                                        [1, 3, 6, 8, 11].forEach(indice => {
+                                        [1, 3, 6, 8, 12,14].forEach(indice => {
                                             filaData.push(celdas[indice].textContent);
                                         });
                                         resultados.push(filaData);
@@ -143,7 +143,7 @@
 
                             const nuevaTabla = document.createElement('table');
                             const encabezadoFila = document.createElement('tr');
-                            const encabezados = ['Programa', 'Clase', 'Fecha de inicio', 'Salón','Profesor'];
+                            const encabezados = ['Programa', 'Clase', 'Fecha de inicio', 'Salón','Profesor','Responsable'];
                             encabezados.forEach(encabezado => {
                                 const th = document.createElement('th');
                                 th.textContent = encabezado;
