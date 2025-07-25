@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Información por día de la semana</title>
   <style>
     body {
@@ -12,20 +14,46 @@
     }
 
     #contenedor-dia {
-      margin: 20px;
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 10px;
+    }
+
+    #contenedor-dia select,
+    #contenedor-dia button {
+      width: 100%;
+      font-size: 1em;
+      padding: 10px;
+      margin-top: 10px;
+      border: 1px solid #c2e5b0;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+
+    #contenedor-dia button {
+      background-color: #b8e0b9;
+      color: #333;
+      border: none;
+      cursor: pointer;
+    }
+
+    #contenedor-dia button:hover {
+      background-color: #c7e9c8;
     }
 
     #resultado {
-      margin: 20px;
+      max-width: 100%;
       overflow-x: auto;
+      margin: 0 auto 40px;
+      padding: 0 10px;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
       background-color: #fff;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       min-width: 600px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
     th, td {
@@ -33,6 +61,7 @@
       padding: 8px;
       text-align: left;
       white-space: nowrap;
+      font-size: 0.95em;
     }
 
     th {
@@ -40,46 +69,18 @@
       color: #fff;
     }
 
-    select, button {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 10px;
-      border: 1px solid #c2e5b0;
-      border-radius: 5px;
-      box-sizing: border-box;
-    }
-
-    button {
-      background-color: #b8e0b9;
-      color: #333;
-      border: none;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #c7e9c8;
-    }
-
     @media (max-width: 600px) {
-      table {
-        font-size: 18px;
-      }
-
-      #contenedor-dia {
-        font-size: 18px;
-      }
-
       th, td {
+        font-size: 0.85em;
         padding: 6px;
       }
 
-      td:nth-child(1),
-      td:nth-child(2),
-      td:nth-child(3),
-      td:nth-child(4),
-      td:nth-child(5),
-      td:nth-child(6) {
-        white-space: normal;
+      table {
+        min-width: unset;
+      }
+
+      #contenedor-dia {
+        padding: 0 10px;
       }
     }
   </style>
@@ -156,7 +157,7 @@
                   fila[7], // Fecha inicial
                   fila[4], // Salón
                   fila[12], // Profesor
-                  '' // Responsable
+                  '' // Responsable (vacío)
                 ]);
               }
             }
