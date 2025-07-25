@@ -111,16 +111,20 @@
                 .then(response => response.text())
                 .then(data => {
                     const rows = data.split('\n').map(row => row.split(','));
+                    console.log("Día seleccionado:", diaSeleccionado);
+                    console.log("Primera fila (encabezados):", rows[0]);
+                    console.log("Ejemplo fila 2:", rows[1]);
                     const resultados = [];
 
                     for (let i = 1; i < rows.length; i++) {
                         const fila = rows[i];
                         if (fila.length > 14 && fila[6].trim() === diaSeleccionado) {
                             resultados.push([
-                                fila[1], // Programa
-                                fila[3], // Clase
+                                fila[0], // Programa
+                                fila[2], // Clase
                                 fila[6], // Día
-                                fila[5], // Salón
+                                fila[7],//Decha
+                                fila[4], // Salón
                                 fila[12] // Profesor
                             ]);
                         }
@@ -131,7 +135,7 @@
 
                         const nuevaTabla = document.createElement('table');
                         const encabezadoFila = document.createElement('tr');
-                        const encabezados = ['Materia', 'Clase', 'Día', 'Salón', 'Profesor'];
+                        const encabezados = ['Materia', 'Clase', 'Día','Fecha inicial', 'Salón', 'Profesor'];
                         encabezados.forEach(encabezado => {
                             const th = document.createElement('th');
                             th.textContent = encabezado;
