@@ -60,7 +60,6 @@
             background-color: #c7e9c8;
         }
 
-        /* Ajustes para pantallas pequeñas */
         @media (max-width: 600px) {
             table {
                 font-size: 18px;
@@ -71,17 +70,16 @@
             }
 
             th, td {
-                padding: 6px; /* Reduce el padding para más espacio */
+                padding: 6px;
             }
 
-            /* Ajuste adicional para evitar que las celdas sean demasiado estrechas */
-            td:nth-child(1), /* Programa */
-            td:nth-child(2), /* Clase */
-            td:nth-child(3), /* Fecha de inicio */
-            td:nth-child(4), /* Salón */
-            td:nth-child(5), /* Número de clase */
-            td:nth-child(6) { /* Profesor */
-                white-space: normal; /* Permite que el texto se envuelva en estas columnas */
+            td:nth-child(1),
+            td:nth-child(2),
+            td:nth-child(3),
+            td:nth-child(4),
+            td:nth-child(5),
+            td:nth-child(6) {
+                white-space: normal;
             }
         }
     </style>
@@ -102,71 +100,59 @@
     <div id="resultado"></div>
 
     <script>
-        document.getElementById('buscar').addEventListener('click', function() {
+        document.getElementById('buscar').addEventListener('click', function () {
             const diaSeleccionado = document.getElementById('dia').value;
             const resultadoDiv = document.getElementById('resultado');
             resultadoDiv.innerHTML = '';
 
-            const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSjDor2EWx8ypI9qFtevNxgi84KiEzjDeIM4vST892VSXknnIA_Tv-dH21PTh7dXCmEzmoj9nh2nYTA/pubhtml'; // Reemplaza con tu URL
+            const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSjDor2EWx8ypI9qFtevNxgi84KiEzjDeIM4vST892VSXknnIA_Tv-dH21PTh7dXCmEzmoj9nh2nYTA/pub?output=csv';
 
             fetch(url)
                 .then(response => response.text())
-                .then(html => {
-                    const parser = new DOMParser();
-                    const doc = parser.parseFromString(html, 'text/html');
-                    const tabla = doc.querySelector('table');
+                .then(data => {
+                    const rows = data.split('\n').map(row => row.split(','));
+                    const resultados = [];
 
-                    if (tabla) {
-                        let resultadosEncontrados = false;
-                        const resultados = [];
+                    for (let i = 1; i < rows.length; i++) {
+                        const fila = rows[i];
+                        if (fila.length > 14 && fila[6].trim() === diaSeleccionado) {
+                            resultados.push([
+                                fila[1], // Programa
+                                fila[3], // Clase
+                                fila[6], // Fecha de inicio
+                                fila[5], // Salón
+                                fila[12], // Profesor
+                                fila[14] // Responsable
+                            ]);
+                        }
+                    }
 
-                        tabla.querySelectorAll('tr').forEach((fila, rowIndex) => {
-                            if (rowIndex > 0) {
-                                const celdas = fila.querySelectorAll('td, th');
-                                if (celdas.length > 11) {
-                                    const diaTabla = celdas[6].textContent.trim();
+                    if (resultados.length > 0) {
+                        resultados.sort((a, b) => a[3].localeCompare(b[3]));
 
-                                    if (diaTabla === diaSeleccionado) {
-                                        resultadosEncontrados = true;
-                                        const filaData = [];
-                                        [1, 3, 6, 5, 12,14].forEach(indice => {
-                                            filaData.push(celdas[indice].textContent);
-                                        });
-                                        resultados.push(filaData);
-                                    }
-                                }
-                            }
+                        const nuevaTabla = document.createElement('table');
+                        const encabezadoFila = document.createElement('tr');
+                        const encabezados = ['Programa', 'Clase', 'Fecha de inicio', 'Salón', 'Profesor', 'Responsable'];
+                        encabezados.forEach(encabezado => {
+                            const th = document.createElement('th');
+                            th.textContent = encabezado;
+                            encabezadoFila.appendChild(th);
+                        });
+                        nuevaTabla.appendChild(encabezadoFila);
+
+                        resultados.forEach(filaData => {
+                            const nuevaFila = document.createElement('tr');
+                            filaData.forEach(celda => {
+                                const td = document.createElement('td');
+                                td.textContent = celda;
+                                nuevaFila.appendChild(td);
+                            });
+                            nuevaTabla.appendChild(nuevaFila);
                         });
 
-                        if (resultadosEncontrados) {
-                            resultados.sort((a, b) => a[3].localeCompare(b[3]));
-
-                            const nuevaTabla = document.createElement('table');
-                            const encabezadoFila = document.createElement('tr');
-                            const encabezados = ['Programa', 'Clase', 'Fecha de inicio', 'Salón','Profesor','Responsable'];
-                            encabezados.forEach(encabezado => {
-                                const th = document.createElement('th');
-                                th.textContent = encabezado;
-                                encabezadoFila.appendChild(th);
-                            });
-                            nuevaTabla.appendChild(encabezadoFila);
-
-                            resultados.forEach(filaData => {
-                                const nuevaFila = document.createElement('tr');
-                                filaData.forEach(celda => {
-                                    const td = document.createElement('td');
-                                    td.textContent = celda;
-                                    nuevaFila.appendChild(td);
-                                });
-                                nuevaTabla.appendChild(nuevaFila);
-                            });
-
-                            resultadoDiv.appendChild(nuevaTabla);
-                        } else {
-                            resultadoDiv.innerHTML = '<p>No se encontraron resultados para el día seleccionado.</p>';
-                        }
+                        resultadoDiv.appendChild(nuevaTabla);
                     } else {
-                        resultadoDiv.textContent = 'No se encontró la tabla en la hoja de cálculo.';
+                        resultadoDiv.innerHTML = '<p>No se encontraron resultados para el día seleccionado.</p>';
                     }
                 })
                 .catch(error => {
