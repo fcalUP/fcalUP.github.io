@@ -101,7 +101,7 @@
 
     <script>
         document.getElementById('buscar').addEventListener('click', function () {
-            const diaSeleccionado = document.getElementById('dia').value;
+            const diaSeleccionado = document.getElementById('dia').value.toLowerCase().trim();
             const resultadoDiv = document.getElementById('resultado');
             resultadoDiv.innerHTML = '';
 
@@ -111,22 +111,22 @@
                 .then(response => response.text())
                 .then(data => {
                     const rows = data.split('\n').map(row => row.split(','));
-                    console.log("Día seleccionado:", diaSeleccionado);
-                    console.log("Primera fila (encabezados):", rows[0]);
-                    console.log("Ejemplo fila 2:", rows[1]);
                     const resultados = [];
 
                     for (let i = 1; i < rows.length; i++) {
                         const fila = rows[i];
-                        if (fila.length > 14 && fila[6].trim() === diaSeleccionado) {
-                            resultados.push([
-                                fila[0], // Programa
-                                fila[2], // Clase
-                                fila[6], // Día
-                                fila[7],//Decha
-                                fila[4], // Salón
-                                fila[12] // Profesor
-                            ]);
+                        if (fila.length > 12) {
+                            const diaFila = fila[6].toLowerCase().trim();
+                            if (diaFila === diaSeleccionado) {
+                                resultados.push([
+                                    fila[0], // Materia
+                                    fila[2], // Clase
+                                    fila[7], // Fecha inicial
+                                    fila[4], // Salón
+                                    fila[12], // Profesor
+                                    ''        // Responsable (vacío o ajustable)
+                                ]);
+                            }
                         }
                     }
 
@@ -135,7 +135,7 @@
 
                         const nuevaTabla = document.createElement('table');
                         const encabezadoFila = document.createElement('tr');
-                        const encabezados = ['Materia', 'Clase', 'Día','Fecha inicial', 'Salón', 'Profesor'];
+                        const encabezados = ['Materia', 'Clase', 'Fecha inicial', 'Salón', 'Profesor', 'Responsable'];
                         encabezados.forEach(encabezado => {
                             const th = document.createElement('th');
                             th.textContent = encabezado;
