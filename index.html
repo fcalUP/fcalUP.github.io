@@ -101,33 +101,34 @@
 
     <script>
         document.getElementById('buscar').addEventListener('click', function () {
-            const diaSeleccionado = document.getElementById('dia').value.toLowerCase().trim();
+            const diaSeleccionado = document.getElementById('dia').value;
             const resultadoDiv = document.getElementById('resultado');
             resultadoDiv.innerHTML = '';
 
             const url = 'https://docs.google.com/spreadsheets/d/1lILoDD24WzMLBay4f7v2EmM6VN_4HnlHB68brXaqLgw/gviz/tq?tqx=out:csv&gid=419729999';
 
+            // Limpieza robusta de cadenas
+            const clean = str => str?.toLowerCase().trim().replace(/\r/g, '').replace(/\n/g, '');
+
             fetch(url)
                 .then(response => response.text())
                 .then(data => {
                     const rows = data.split('\n').map(row => row.split(','));
-                    console.log("Día seleccionado:", diaSeleccionado);
-                    console.log("Primera fila (encabezados):", rows[0]);
-                    console.log("Ejemplo fila 2:", rows[1]);
                     const resultados = [];
 
                     for (let i = 1; i < rows.length; i++) {
                         const fila = rows[i];
                         if (fila.length > 12) {
-                            const diaFila = fila[6].toLowerCase().trim();
-                            if (diaFila === diaSeleccionado) {
+                            const diaRaw = fila[6] || '';
+                            console.log("Valor crudo en fila[6]:", JSON.stringify(diaRaw));
+                            if (clean(diaRaw) === clean(diaSeleccionado)) {
                                 resultados.push([
                                     fila[0], // Materia
                                     fila[2], // Clase
                                     fila[7], // Fecha inicial
                                     fila[4], // Salón
                                     fila[12], // Profesor
-                                    ''        // Responsable (vacío o ajustable)
+                                    ''        // Responsable (vacío por ahora)
                                 ]);
                             }
                         }
