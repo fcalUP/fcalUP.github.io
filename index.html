@@ -111,6 +111,9 @@
                 .then(response => response.text())
                 .then(data => {
                     const rows = data.split('\n').map(row => row.split(','));
+                    console.log("Día seleccionado:", diaSeleccionado);
+                    console.log("Primera fila (encabezados):", rows[0]);
+                    console.log("Ejemplo fila 2:", rows[1]);
                     const resultados = [];
 
                     for (let i = 1; i < rows.length; i++) {
