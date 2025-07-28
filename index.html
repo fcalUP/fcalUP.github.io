@@ -157,7 +157,7 @@
                   fila[7], // Fecha inicial
                   fila[4], // Salón
                   fila[12], // Profesor
-                  '' // Responsable (vacío)
+                  fila[9] // Servicios
                 ]);
               }
             }
@@ -168,7 +168,7 @@
 
             const nuevaTabla = document.createElement('table');
             const encabezadoFila = document.createElement('tr');
-            const encabezados = ['Materia', 'Clase', 'Fecha inicial', 'Salón', 'Profesor', 'Responsable'];
+            const encabezados = ['Materia', 'Clase', 'Fecha inicial', 'Salón', 'Profesor', 'Servicios'];
             encabezados.forEach(encabezado => {
               const th = document.createElement('th');
               th.textContent = encabezado;
