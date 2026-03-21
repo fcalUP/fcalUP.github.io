@@ -1,200 +1,255 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Información por día de la semana</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      background-color: #f0f0f0;
-      color: #333;
-      margin: 0;
-      padding: 0;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Architecture Assessment 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4F46E5;
+            --primary-soft: #F5F7FF;
+            --text-main: #111827;
+            --text-muted: #4B5563;
+            --border: #E5E7EB;
+            --bg: #F9FAFB;
+        }
 
-    #contenedor-dia {
-      max-width: 800px;
-      margin: 20px auto;
-      padding: 10px;
-    }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text-main); margin: 0; padding-bottom: 80px; }
+        
+        /* Barra de Progreso */
+        .progress-container { position: fixed; top: 0; left: 0; width: 100%; height: 6px; background: #E5E7EB; z-index: 1000; }
+        #progress-bar { height: 100%; width: 0%; background: var(--primary); transition: width 0.3s ease; }
 
-    #contenedor-dia select,
-    #contenedor-dia button {
-      width: 100%;
-      font-size: 1em;
-      padding: 10px;
-      margin-top: 10px;
-      border: 1px solid #c2e5b0;
-      border-radius: 5px;
-      box-sizing: border-box;
-    }
+        .container { max-width: 850px; margin: 60px auto; background: white; padding: 40px; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        
+        header { border-bottom: 2px solid var(--border); margin-bottom: 30px; padding-bottom: 20px; }
+        h1 { font-size: 1.8rem; font-weight: 800; margin: 0; }
+        p { color: var(--text-muted); margin-top: 5px; }
 
-    #contenedor-dia button {
-      background-color: #b8e0b9;
-      color: #333;
-      border: none;
-      cursor: pointer;
-    }
+        .section-title { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--primary); margin: 40px 0 15px; font-weight: 800; }
 
-    #contenedor-dia button:hover {
-      background-color: #c7e9c8;
-    }
+        .q-card { margin-bottom: 12px; padding: 20px; border: 1px solid var(--border); border-radius: 12px; transition: 0.2s; }
+        .q-card:hover { border-color: var(--primary); }
+        .q-card label { display: block; font-weight: 600; margin-bottom: 12px; font-size: 0.95rem; }
 
-    #resultado {
-      max-width: 100%;
-      overflow-x: auto;
-      margin: 0 auto 40px;
-      padding: 0 10px;
-    }
+        input[type="text"] {
+            width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.9rem; outline: none; box-sizing: border-box;
+        }
+        input[type="text"]:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1); }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background-color: #fff;
-      min-width: 600px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
+        .options { display: flex; gap: 20px; }
+        .option-item { display: flex; align-items: center; font-size: 0.9rem; cursor: pointer; }
+        input[type="radio"] { margin-right: 8px; accent-color: var(--primary); }
 
-    th, td {
-      border: 1px solid #c2e5b0;
-      padding: 8px;
-      text-align: left;
-      white-space: nowrap;
-      font-size: 0.95em;
-    }
-
-    th {
-      background-color: #a7d1ab;
-      color: #fff;
-    }
-
-    @media (max-width: 600px) {
-      th, td {
-        font-size: 0.85em;
-        padding: 6px;
-      }
-
-      table {
-        min-width: unset;
-      }
-
-      #contenedor-dia {
-        padding: 0 10px;
-      }
-    }
-  </style>
+        #btn-submit {
+            width: 100%; background: var(--primary); color: white; padding: 18px; border: none; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; margin-top: 30px;
+        }
+    </style>
 </head>
 <body>
-  <div id="contenedor-dia">
-    <select id="dia">
-      <option value="Lunes">Lunes</option>
-      <option value="Martes">Martes</option>
-      <option value="Miércoles">Miércoles</option>
-      <option value="Jueves">Jueves</option>
-      <option value="Viernes">Viernes</option>
-      <option value="Sábado">Sábado</option>
-    </select>
-    <button id="buscar">Buscar</button>
-  </div>
 
-  <div id="resultado"></div>
+<div class="progress-container"><div id="progress-bar"></div></div>
 
-  <script>
-    function parseCSV(csvText) {
-      const lines = csvText.trim().split('\n');
-      return lines.map(line => {
-        const values = [];
-        let current = '';
-        let inQuotes = false;
+<div class="container">
+    <header>
+        <h1>Evaluación de Fundamentos Web</h1>
+        <p>Por favor, sea preciso con los nombres de etiquetas y sintaxis técnica.</p>
+    </header>
 
-        for (let i = 0; i < line.length; i++) {
-          const char = line[i];
-          const next = line[i + 1];
+    <form id="quiz-form" action="https://formspree.io/f/fcal@up.edu.mx" method="POST">
+        
+        <div style="background: var(--primary-soft); padding: 20px; border-radius: 12px; margin-bottom: 30px;">
+            <label style="font-size: 0.8rem; font-weight: 800; color: var(--primary);">ID DE ESTUDIANTE / MATRÍCULA</label>
+            <input type="text" id="student_id" name="_subject" placeholder="Este ID será el asunto del correo" required>
+        </div>
 
-          if (char === '"' && inQuotes && next === '"') {
-            current += '"';
-            i++;
-          } else if (char === '"') {
-            inQuotes = !inQuotes;
-          } else if (char === ',' && !inQuotes) {
-            values.push(current);
-            current = '';
-          } else {
-            current += char;
-          }
-        }
-        values.push(current);
-        return values;
-      });
-    }
+        <div class="section-title">01 HTML: Semántica y Estructura</div>
+        <div class="q-card">
+            <label>1. Escribe el acrónimo completo de HTML:</label>
+            <input type="text" name="p1" data-answer="HyperText Markup Language" class="track" required>
+        </div>
+        <div class="q-card">
+            <label>2. ¿Cuál es la etiqueta raíz obligatoria que envuelve todo el contenido de una página?</label>
+            <input type="text" name="p2" data-answer="html" class="track">
+        </div>
+        <div class="q-card">
+            <label>3. ¿Qué etiqueta se utiliza para incluir metadatos, scripts y hojas de estilo que no son visibles en el cuerpo?</label>
+            <input type="text" name="p3" data-answer="head" class="track">
+        </div>
+        <div class="q-card">
+            <label>4. Indica la etiqueta específica para definir el título que aparece en la pestaña del navegador:</label>
+            <input type="text" name="p4" data-answer="title" class="track">
+        </div>
+        <div class="q-card">
+            <label>5. ¿Cuál es el atributo de la etiqueta &lt;a&gt; que define la dirección URL del enlace?</label>
+            <input type="text" name="p5" data-answer="href" class="track">
+        </div>
+        <div class="q-card">
+            <label>6. ¿Qué etiqueta semántica se usa para definir el contenido principal de una página (solo una vez por documento)?</label>
+            <input type="text" name="p6" data-answer="main" class="track">
+        </div>
+        <div class="q-card">
+            <label>7. ¿Cómo se llama la etiqueta de lista que genera viñetas (puntos) en lugar de números?</label>
+            <input type="text" name="p7" data-answer="ul" class="track">
+        </div>
 
-    function clean(str) {
-      return str?.toLowerCase().trim().replace(/\r/g, '').replace(/\n/g, '');
-    }
+        <div class="section-title">02 CSS: Diseño y Layout</div>
+        <div class="q-card">
+            <label>8. ¿Qué propiedad controla el espacio transparente **exterior** de un elemento?</label>
+            <input type="text" name="p8" data-answer="margin" class="track">
+        </div>
+        <div class="q-card">
+            <label>9. ¿Qué símbolo se antepone en el selector para aplicar estilos a un ID específico?</label>
+            <input type="text" name="p9" data-answer="#" class="track">
+        </div>
+        <div class="q-card">
+            <label>10. Propiedad para establecer el orden de capas en el eje Z (profundidad):</label>
+            <input type="text" name="p10" data-answer="z-index" class="track">
+        </div>
+        <div class="q-card">
+            <label>11. ¿Qué valor de la propiedad 'display' activa el modelo de caja flexible?</label>
+            <input type="text" name="p11" data-answer="flex" class="track">
+        </div>
+        <div class="q-card">
+            <label>12. Propiedad para cambiar el color de la tipografía (no del fondo):</label>
+            <input type="text" name="p12" data-answer="color" class="track">
+        </div>
+        <div class="q-card">
+            <label>13. ¿Qué propiedad permite redondear las esquinas de un borde?</label>
+            <input type="text" name="p14" data-answer="border-radius" class="track">
+        </div>
+        <div class="q-card">
+            <label>14. Valor de 'position' para que un elemento se desplace junto con el scroll del usuario:</label>
+            <div class="options">
+                <label class="option-item"><input type="radio" name="p14" value="fixed" class="track"> fixed</label>
+                <label class="option-item"><input type="radio" name="p14" value="absolute" class="track"> absolute</label>
+            </div>
+        </div>
 
-    document.getElementById('buscar').addEventListener('click', function () {
-      const diaSeleccionado = document.getElementById('dia').value;
-      const resultadoDiv = document.getElementById('resultado');
-      resultadoDiv.innerHTML = '';
+        <div class="section-title">03 JavaScript: Lógica y DOM</div>
+        <div class="q-card">
+            <label>15. ¿Cuál es la diferencia entre 'let' y 'const'?</label>
+            <div class="options">
+                <label class="option-item"><input type="radio" name="p15" value="c" class="track"> const no permite reasignación</label>
+                <label class="option-item"><input type="radio" name="p15" value="l" class="track"> let no permite reasignación</label>
+            </div>
+        </div>
+        <div class="q-card">
+            <label>16. ¿Qué operador se usa para comparar valor y tipo de dato simultáneamente (igualdad estricta)?</label>
+            <input type="text" name="p16" data-answer="===" class="track">
+        </div>
+        <div class="q-card">
+            <label>17. Método de Array para añadir un elemento a la **última** posición:</label>
+            <input type="text" name="p17" data-answer="push" class="track">
+        </div>
+        <div class="q-card">
+            <label>18. ¿Cómo se llama el objeto global que representa el documento HTML en el navegador?</label>
+            <input type="text" name="p18" data-answer="document" class="track">
+        </div>
+        <div class="q-card">
+            <label>19. Símbolo usado para comentarios de una sola línea:</label>
+            <input type="text" name="p19" data-answer="//" class="track">
+        </div>
+        <div class="q-card">
+            <label>20. ¿Qué palabra clave se usa para definir una función que devuelve una Promesa de forma implícita?</label>
+            <input type="text" name="p20" data-answer="async" class="track">
+        </div>
+        <div class="q-card">
+            <label>21. Método para convertir un String de JSON a un Objeto de JavaScript:</label>
+            <input type="text" name="p21" data-answer="JSON.parse" class="track">
+        </div>
+        <div class="q-card">
+            <label>22. ¿Qué valor devuelve la expresión 'typeof []'?</label>
+            <input type="text" name="p22" data-answer="object" class="track">
+        </div>
 
-      const url = 'https://docs.google.com/spreadsheets/d/1lILoDD24WzMLBay4f7v2EmM6VN_4HnlHB68brXaqLgw/gviz/tq?tqx=out:csv&gid=419729999';
+        <div class="section-title">04 React: Componentes y Estado</div>
+        <div class="q-card">
+            <label>23. ¿Cómo se llaman las propiedades que un componente recibe de su padre?</label>
+            <input type="text" name="p23" data-answer="props" class="track">
+        </div>
+        <div class="q-card">
+            <label>24. Hook estándar para manejar variables que, al cambiar, disparan un re-render:</label>
+            <input type="text" name="p24" data-answer="useState" class="track">
+        </div>
+        <div class="q-card">
+            <label>25. Hook para ejecutar código después de que el componente se monte o actualice:</label>
+            <input type="text" name="p25" data-answer="useEffect" class="track">
+        </div>
+        <div class="q-card">
+            <label>26. Nombre de la extensión de sintaxis que permite escribir HTML dentro de JavaScript:</label>
+            <input type="text" name="p26" data-answer="jsx" class="track">
+        </div>
+        <div class="q-card">
+            <label>27. ¿Qué atributo único deben tener los elementos de una lista generada con .map()?</label>
+            <input type="text" name="p27" data-answer="key" class="track">
+        </div>
+        <div class="q-card">
+            <label>28. ¿React actualiza el DOM real directamente en cada cambio?</label>
+            <div class="options">
+                <label class="option-item"><input type="radio" name="p28" value="no" class="track"> No, usa un Virtual DOM</label>
+                <label class="option-item"><input type="radio" name="p28" value="si" class="track"> Sí, es inmediato</label>
+            </div>
+        </div>
+        <div class="q-card">
+            <label>29. Hook para crear una referencia persistente a un elemento del DOM:</label>
+            <input type="text" name="p29" data-answer="useRef" class="track">
+        </div>
+        <div class="q-card">
+            <label>30. ¿Se pueden declarar Hooks dentro de un ciclo 'for' o un 'if'?</label>
+            <div class="options">
+                <label class="option-item"><input type="radio" name="p30" value="no" class="track"> No</label>
+                <label class="option-item"><input type="radio" name="p30" value="si" class="track"> Sí</label>
+            </div>
+        </div>
 
-      fetch(url)
-        .then(response => response.text())
-        .then(csv => {
-          const rows = parseCSV(csv);
-          const resultados = [];
+        <input type="hidden" name="Puntaje_Final" id="score-input">
+        <button type="submit" id="btn-submit">Finalizar Evaluación</button>
+    </form>
+</div>
 
-          for (let i = 1; i < rows.length; i++) {
-            const fila = rows[i];
-            if (fila.length > 12) {
-              const diaRaw = fila[6] || '';
-              if (clean(diaRaw) === clean(diaSeleccionado)) {
-                resultados.push([
-                  fila[0], // Materia
-                  fila[2], // Clase
-                  fila[7], // Fecha inicial
-                  fila[4], // Salón
-                  fila[12], // Profesor
-                  fila[9] // Servicios
-                ]);
-              }
-            }
-          }
+<script>
+    const form = document.getElementById('quiz-form');
+    const progressBar = document.getElementById('progress-bar');
 
-          if (resultados.length > 0) {
-            resultados.sort((a, b) => a[3].localeCompare(b[3]));
-
-            const nuevaTabla = document.createElement('table');
-            const encabezadoFila = document.createElement('tr');
-            const encabezados = ['Materia', 'Clase', 'Fecha inicial', 'Salón', 'Profesor', 'Servicios'];
-            encabezados.forEach(encabezado => {
-              const th = document.createElement('th');
-              th.textContent = encabezado;
-              encabezadoFila.appendChild(th);
-            });
-            nuevaTabla.appendChild(encabezadoFila);
-
-            resultados.forEach(filaData => {
-              const nuevaFila = document.createElement('tr');
-              filaData.forEach(celda => {
-                const td = document.createElement('td');
-                td.textContent = celda;
-                nuevaFila.appendChild(td);
-              });
-              nuevaTabla.appendChild(nuevaFila);
-            });
-
-            resultadoDiv.appendChild(nuevaTabla);
-          } else {
-            resultadoDiv.innerHTML = '<p>No se encontraron resultados para el día seleccionado.</p>';
-          }
-        })
-        .catch(error => {
-          resultadoDiv.textContent = 'Error al cargar la hoja de cálculo: ' + error;
-        });
+    // Progreso
+    form.addEventListener('input', () => {
+        const total = 30;
+        let answered = 0;
+        const radios = [...new Set([...document.querySelectorAll('input[type="radio"]')].map(r => r.name))];
+        radios.forEach(name => { if(document.querySelector(`input[name="${name}"]:checked`)) answered++; });
+        document.querySelectorAll('input[type="text"].track').forEach(i => { if(i.value.trim() !== "") answered++; });
+        progressBar.style.width = (answered / total * 100) + "%";
     });
-  </script>
+
+    // Calificación
+    form.addEventListener('submit', function(e) {
+        let score = 0;
+        
+        // Calificar textos
+        document.querySelectorAll('input[type="text"].track').forEach(i => {
+            if(i.dataset.answer && i.value.toLowerCase().includes(i.dataset.answer.toLowerCase())) score++;
+        });
+
+        // Calificar radios
+        const correctRadios = { p14:'fixed', p15:'c', p28:'no', p30:'no' };
+        for (let k in correctRadios) {
+            const s = form.querySelector(`input[name="${k}"]:checked`);
+            if(s && s.value === correctRadios[k]) score++;
+        }
+
+        document.getElementById('score-input').value = score + "/30";
+
+        let msg = "";
+        if (score < 1) msg = "Necesitamos hablar...";
+        else if (score >= 15 && score <= 20) msg = "Te van a ser llevaderas las primeras 6 clases";
+        else if (score > 25) msg = "You shall pass...";
+        else msg = "Puntuación final: " + score + "/30";
+
+        alert(msg);
+    });
+</script>
+
 </body>
 </html>
