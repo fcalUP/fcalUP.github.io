@@ -208,12 +208,11 @@
         <button type="submit" id="btn-submit">Finalizar Evaluación</button>
     </form>
 </div>
-
 <script>
     const form = document.getElementById('quiz-form');
     const progressBar = document.getElementById('progress-bar');
 
-    // Progreso
+    // 1. Lógica de la Barra de Progreso
     form.addEventListener('input', () => {
         const total = 30;
         let answered = 0;
@@ -223,31 +222,42 @@
         progressBar.style.width = (answered / total * 100) + "%";
     });
 
-    // Calificación
+    // 2. Lógica de Envío y Calificación
     form.addEventListener('submit', function(e) {
+        // DETENEMOS el envío automático para procesar los puntos primero
+        e.preventDefault();
+
         let score = 0;
         
         // Calificar textos
         document.querySelectorAll('input[type="text"].track').forEach(i => {
-            if(i.dataset.answer && i.value.toLowerCase().includes(i.dataset.answer.toLowerCase())) score++;
+            if(i.dataset.answer && i.value.toLowerCase().trim().includes(i.dataset.answer.toLowerCase())) {
+                score++;
+            }
         });
 
-        // Calificar radios
+        // Calificar radios (Ajusta estos valores según tus respuestas correctas)
         const correctRadios = { p14:'fixed', p15:'c', p28:'no', p30:'no' };
         for (let k in correctRadios) {
             const s = form.querySelector(`input[name="${k}"]:checked`);
             if(s && s.value === correctRadios[k]) score++;
         }
 
+        // Guardamos el puntaje en el campo oculto
         document.getElementById('score-input').value = score + "/30";
 
+        // Mensaje personalizado
         let msg = "";
-        if (score < 1) msg = "Necesitamos hablar...";
-        else if (score >= 15 && score <= 20) msg = "Te van a ser llevaderas las primeras 6 clases";
-        else if (score > 25) msg = "You shall pass...";
+        if (score < 1) msg = "Puntuación: " + score + "/30. Necesitamos hablar...";
+        else if (score >= 15 && score <= 20) msg = "Puntuación: " + score + "/30. Te van a ser llevaderas las primeras 6 clases";
+        else if (score > 25) msg = "Puntuación: " + score + "/30. ¡Excelente! You shall pass...";
         else msg = "Puntuación final: " + score + "/30";
 
+        // Mostramos el alert al alumno
         alert(msg);
+
+        // ¡CLAVE! Enviamos el formulario manualmente a Formspree después del alert
+        form.submit();
     });
 </script>
 
